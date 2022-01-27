@@ -1,5 +1,6 @@
 1. Discuss your initial thoughts in details on how you will design this application?
 
 2. Discuss what development methodology you will use and why?
+We plan on using SCRUM as the project's development methodology since it allows for agile software development and developing in "sprints" based on a "backlog" of requirements will allow us to effciently accomplish our overall long-term task while being able to quickly report the state of the software to each other. 
 
 3. Provide high level design / architecture of your solution that you are proposing?
