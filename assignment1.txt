@@ -1,4 +1,5 @@
 1. Discuss your initial thoughts in details on how you will design this application?
+We will design this application through O.O.D. to implement the fuel quote form along with the the client's profile information. We will also develop a front-end and back-end server for our website to handle requests and responses between the client and server.
 
 2. Discuss what development methodology you will use and why?
 We plan on using SCRUM as the project's development methodology since it allows for agile software development and developing in "sprints" based on a "backlog" of requirements will allow us to effciently accomplish our overall long-term task while being able to quickly report the state of the software to each other. 
