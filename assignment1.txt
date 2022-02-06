@@ -2,9 +2,10 @@
 We will design the fuel quote form along with the the client's profile information portion of this project through O.O.D. We will also develop a front-end and back-end server for our website to handle requests and responses between the client and server. The web portion of the project will follow a MVC (Models-Views-Controllers) format, the form quote and client profile information will be modular, and the client's fuel quote history will be working with a database.
 
 2. Discuss what development methodology you will use and why?
-We plan on using SCRUM as the project's development methodology since it allows for agile software development and developing in "sprints" based on a "backlog" of requirements will allow us to effciently accomplish our overall long-term task while being able to quickly report the state of the software to each other. 
+We plan on using SCRUM as the project's development methodology since it allows for agile software development and developing in "sprints" based on a "backlog" of requirements will allow us to effciently accomplish our overall long-term task while being able to quickly report the state of the software to each other.
 
 3. Provide high level design / architecture of your solution that you are proposing?
+See "Assignment 1 UML.pdf" for UML diagram
 
 Functional requirements: Login and registration, profile management, generation of fuel quote form with detailed factors listed, history of fuel quotes provided per client, data storage
 Non-functional requirements:
