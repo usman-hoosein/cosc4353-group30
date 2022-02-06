@@ -5,3 +5,11 @@ We will design this application through O.O.D. to implement the fuel quote form 
 We plan on using SCRUM as the project's development methodology since it allows for agile software development and developing in "sprints" based on a "backlog" of requirements will allow us to effciently accomplish our overall long-term task while being able to quickly report the state of the software to each other. 
 
 3. Provide high level design / architecture of your solution that you are proposing?
+
+Functional requirements: Login and registration, profile management, generation of fuel quote form with detailed factors listed, history of fuel quotes provided per client, data storage
+Non-functional requirements:
+Maintainability - multiple people will be working on the software and it's important that the code is readable and follows best practices
+Security - sensitive financial information of the clients will be recorded on their accounts
+Reliability/consistency
+Scalability - if the application is successful, there could be a large number of clients
+Usability is also a consideration.
