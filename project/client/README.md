@@ -4,11 +4,9 @@
 2. Open a terminal and locate this folder on your machine
 
 3. Run 
-
   ### 'npm install'
 
 4. Run 
-
   ### 'npm start'
 
 5. The server should open your browser and display a login screen
