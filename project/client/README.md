@@ -11,4 +11,6 @@
 
 5. The server should open your browser and display a login screen
 
+6. For now, type in anything in the username and passwords fields and hit "Log In". This will take you to the website
+
 ## To shut down the server, hit 'Ctrl + C' on the terminal where the server is running
