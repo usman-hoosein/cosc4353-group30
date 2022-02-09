@@ -44,11 +44,11 @@ function Login({ setToken }) {
       <form className={styles.form} onSubmit={submitHandler}>
         <div className={styles.control}>
           <label htmlFor="username">Username</label>
-          <input type="text" required id="username" ref={usernameInputRef} />
+          <input type="text" required id="username" ref={usernameInputRef} required />
         </div>
         <div className={styles.control}>
           <label htmlFor="password">Password</label>
-          <input type="text" required id="password" ref={passwordInputRef} />
+          <input type="text" required id="password" ref={passwordInputRef} required />
         </div>
         <div className={styles.actions}>
           <button>Login</button>
