@@ -4,15 +4,21 @@ import { useState } from "react";
 import Layout from "./components/layouts/Layout";
 
 import Login from "./components/login/Login";
+import Register from "./components/login/Register";
 import FuelQuoteForm from "./pages/FuelQuoteForm";
 import FuelQuoteHistory from "./pages/FuelQuoteHistory";
 import Profile from "./pages/Profile";
 
 function App() {
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(false);
+  const [needsRgst, setNeedsRgst] = useState(false);
 
-  if (!token) {
-    return <Login setToken={setToken} />;
+
+  if (!token && !needsRgst) {
+    return <Login setToken={setToken} setNeedsRgst={setNeedsRgst} />;
+  }
+  else if (needsRgst) {
+    return <Register setNeedsRgst={setNeedsRgst} />
   }
 
   return (

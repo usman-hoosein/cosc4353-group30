@@ -19,7 +19,7 @@ async function loginUser(credentials) {
   //     });
 }
 
-function Login({ setToken }) {
+function Login(props) {
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -35,7 +35,12 @@ function Login({ setToken }) {
     };
 
     const token = await loginUser(loginData);
-    setToken("FIX THIS");
+    props.setToken("FIX THIS");
+  };
+
+  const registerHandler = async (event) => {
+    event.preventDefault();
+    props.setNeedsRgst(true);
   };
 
   return (
@@ -44,16 +49,32 @@ function Login({ setToken }) {
       <form className={styles.form} onSubmit={submitHandler}>
         <div className={styles.control}>
           <label htmlFor="username">Username</label>
-          <input type="text" required id="username" ref={usernameInputRef} required />
+          <input
+            type="text"
+            required
+            id="username"
+            ref={usernameInputRef}
+            required
+          />
         </div>
         <div className={styles.control}>
           <label htmlFor="password">Password</label>
-          <input type="text" required id="password" ref={passwordInputRef} required />
+          <input
+            type="text"
+            required
+            id="password"
+            ref={passwordInputRef}
+            required
+          />
         </div>
         <div className={styles.actions}>
           <button>Login</button>
         </div>
       </form>
+      <span>or</span>
+      <div className={styles.actions}>
+        <button onClick={registerHandler}>Create New Account</button>
+      </div>
     </div>
   );
 }
@@ -62,4 +83,5 @@ export default Login;
 
 Login.propTypes = {
   setToken: PropTypes.func.isRequired,
+  setNeedsRgst: PropTypes.func.isRequired,
 };

@@ -24,7 +24,7 @@
 
 .actions {
   margin-top: 1rem;
-  text-align: right;
+  text-align: center;
 }
 
 .actions button {
@@ -33,7 +33,7 @@
   background-color: #000000;
   color: white;
   padding: 0.5rem 1.5rem;
-  border: 1px solid #77002e;
+  border: 1px solid #000000;
   border-radius: 4px;
   font-weight: bold;
 }
