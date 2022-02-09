@@ -21,11 +21,6 @@ function Register(props) {
 
     // const token = await loginUser(loginData);
   };
-  
-  const cancelHandler = async (event) => {
-    event.preventDefault();
-    props.setNeedsRgst(false);
-  };
 
   return (
     <div className={styles.login_wrapper}>
