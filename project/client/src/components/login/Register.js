@@ -35,7 +35,6 @@ function Register(props) {
           <label htmlFor="username">Username</label>
           <input
             type="text"
-            required
             id="username"
             ref={usernameInputRef}
             required
@@ -45,7 +44,6 @@ function Register(props) {
           <label htmlFor="password">Password</label>
           <input
             type="text"
-            required
             id="password"
             ref={passwordInputRef}
             required

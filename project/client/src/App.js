@@ -5,7 +5,6 @@ import Layout from "./components/layouts/Layout";
 
 import Login from "./components/login/Login";
 import Register from "./components/login/Register";
-import FuelQuoteForm from "./pages/FuelQuoteForm";
 import FuelQuoteHistory from "./pages/FuelQuoteHistory";
 import Profile from "./pages/Profile";
 
@@ -24,8 +23,7 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<FuelQuoteForm />} />
-        <Route path="/fuel-quote-history" element={<FuelQuoteHistory />} />
+        <Route path="/" element={<FuelQuoteHistory />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </Layout>

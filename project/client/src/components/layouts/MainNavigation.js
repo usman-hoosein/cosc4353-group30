@@ -9,10 +9,7 @@ function MainNavigation() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Fuel Quote Form</Link>
-          </li>
-          <li>
-            <Link to="/fuel-quote-history">Fuel Quote History</Link>
+            <Link to="/">Fuel Quote History</Link>
           </li>
           <li>
             <Link to="/profile">Profile</Link>
