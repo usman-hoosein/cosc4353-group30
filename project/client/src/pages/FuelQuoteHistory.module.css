@@ -1,0 +1,9 @@
+.container {
+  width: 100%;
+}
+
+.button_form {
+  text-align: center;
+  margin: auto;
+  display: flex;
+}
