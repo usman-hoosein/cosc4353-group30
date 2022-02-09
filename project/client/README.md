@@ -6,13 +6,9 @@
 3. Run 
 
   ### 'npm install'
-  
-  on your terminal
 
 4. Run 
 
   ### 'npm start'
-  
-  on your terminal
 
 5. The server should open your browser and display a login screen
