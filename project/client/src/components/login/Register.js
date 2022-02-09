@@ -21,6 +21,12 @@ function Register(props) {
 
     // const token = await loginUser(loginData);
   };
+  
+  const cancelHandler = async (event) => {
+    event.preventDefault();
+    props.setNeedsRgst(false);
+  };
+
   return (
     <div className={styles.login_wrapper}>
       <h1>Create Account</h1>
@@ -49,6 +55,9 @@ function Register(props) {
           <button>Sign Up</button>
         </div>
       </form>
+      <div className={styles.actions_cancel}>
+        <button onClick={cancelHandler}>Cancel</button>
+      </div>
     </div>
   );
 }
