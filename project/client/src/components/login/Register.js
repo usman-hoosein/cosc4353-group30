@@ -55,9 +55,7 @@ function Register(props) {
           <button>Sign Up</button>
         </div>
       </form>
-      <div className={styles.actions_cancel}>
-        <button onClick={cancelHandler}>Cancel</button>
-      </div>
+      <a href="/" className={styles.redirect}>Already have an account?</a>
     </div>
   );
 }

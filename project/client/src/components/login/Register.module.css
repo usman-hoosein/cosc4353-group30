@@ -24,7 +24,7 @@
 
 .actions {
   margin-top: 1rem;
-  text-align: right;
+  text-align: center;
 }
 
 .actions button {
@@ -44,30 +44,13 @@
   color: #c7b300;
 }
 
-.actions_cancel {
-  margin-top: 1rem;
-  text-align: left;
-}
-
-.actions_cancel button {
-  font: inherit;
-  cursor: pointer;
-  background-color: #000000;
-  color: white;
-  padding: 0.5rem 1.5rem;
-  border: 1px solid #000000;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.actions_cancel button:hover,
-.actions_cancel button:active {
-  background-color: #000000;
-  color: #c7b300;
-}
-
 .login_wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.redirect {
+  color: blue;
+  text-decoration: none;
 }
