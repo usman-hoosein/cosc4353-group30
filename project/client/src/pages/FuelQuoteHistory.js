@@ -12,8 +12,7 @@ function FuelQuoteHistory() {
     <div className={styles.container}>
       <button onClick={togglePopup} className={styles.button_form}>Create New Form</button>
       {isOpen && <Popup handleClose={togglePopup} />}
-    </div>
-       
+      
         <div>
         <h1> Fuel Qoute History </h1> 
         <span>
