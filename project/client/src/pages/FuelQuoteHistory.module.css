@@ -1,9 +1,31 @@
 .container {
-  width: 100%;
+    width: 100%;
 }
 
 .button_form {
-  text-align: center;
-  margin: auto;
-  display: flex;
+    text-align: center;
+    margin: auto;
+    display: flex;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 5px;
+}
+
+th,
+td {
+    border: 1px solid #fff;
+    text-align: left;
+    padding: 8px;
+    font-size: 12px;
+}
+
+thead {
+    background-color: gold;
+}
+
+tbody:nth-of-type(even),
+tr:nth-of-type(even) {
+    background-color: #f3f3f3;
 }
