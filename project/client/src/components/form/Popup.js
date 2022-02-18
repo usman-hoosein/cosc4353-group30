@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import styles from "./Popup.module.css";
 
-//FIX THIS: change address value from to whatever is in profile address
+//FIX THIS: change address value in the form to whatever is set in the profile address
 const Popup = (props) => {
   let navigate = useNavigate();
   function SubmitHandler(event) {
