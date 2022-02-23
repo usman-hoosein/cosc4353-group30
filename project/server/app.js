@@ -8,8 +8,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+const loginRoutes = require('./routes/login');
+const profileRoutes = require('./routes/client-profile');
+const fuelRoutes = require('./routes/fuel-quote');
 
 //TODO: update when database is complete
 // pool.query("SET SCHEMA '';", (err, res) => {
@@ -21,7 +22,8 @@ const shopRoutes = require('./routes/shop');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
+app.use('/login', loginRoutes);
+app.use('/profile', profileRoutes);
+app.use('/fuel', fuelRoutes);
 
 app.listen(3000);
