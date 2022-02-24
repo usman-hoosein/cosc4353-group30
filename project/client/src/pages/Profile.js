@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import Axios from "axios";
 
 import styles from "./Profile.module.css";
 
@@ -20,15 +21,61 @@ let exampleData = {
   zip: 77407,
 };
 
-let formed = false;
+let hasPrefill = false;
 
-async function updateProfile() {
-  //FIX THIS: Write function once backend is established.
-  return;
+//Fetching client info from database
+async function getProfile() {
+  return Axios.get("/profile")
+    .then((data) => {
+      console.log("Update Profile status: " + data.statusText);
+      return data;
+    })
+    .catch((err) => {
+      console.log("Update Profile " + err);
+      return err;
+    });
+}
+
+//Sending data to back-end to update client info in the database
+async function updateProfile(data) {
+  Axios.post("/profile/update", {
+    fullName: data.fullName,
+    addr1: data.addr1,
+    addr2: data.addr2,
+    city: data.city,
+    state: data.state,
+    zip: data.zip,
+  })
+    .then((res) => {
+      console.log("Update Profile status: " + res.statusText);
+      return res;
+    })
+    .catch((err) => {
+      console.log("Update Profile " + err);
+    });
+}
+
+//Sending data to back-end to create client info in the database
+async function createProfile(data) {
+  Axios.post("/profile/create", {
+    fullName: data.fullName,
+    addr1: data.addr1,
+    addr2: data.addr2,
+    city: data.city,
+    state: data.state,
+    zip: data.zip,
+  })
+    .then((res) => {
+      console.log("Create Profile status: " + res.statusText);
+      return res;
+    })
+    .catch((err) => {
+      console.log("Create Profile " + err);
+    });
 }
 
 function Profile(props) {
-  const [isEdited, setIsEdited] = useState(false);
+  const [isDisplayProfilePage, setisDisplayProfilePage] = useState(false);
 
   const fullnameInputRef = useRef();
   const address1InputRef = useRef();
@@ -37,11 +84,12 @@ function Profile(props) {
   const stateInputRef = useRef();
   const zipcodeInputRef = useRef();
 
-  const displayProfileInfo = () => {
-    if (!isEdited) {
-      formed = true;
+  const switchProfilePage = () => {
+    if (!isDisplayProfilePage) {
+      //TODO: Update this so that hasPrefill state doesn't stay on the browser
+      hasPrefill = true; //permanentely sets the hasPrefill state to true since the client now has data to prefill form
     }
-    setIsEdited(!isEdited);
+    setisDisplayProfilePage(!isDisplayProfilePage); //Filter between profile display and form pages
   };
 
   const submitHandler = async (event) => {
@@ -56,16 +104,43 @@ function Profile(props) {
       zip: zipcodeInputRef.current.value,
     });
 
-    const token = await updateProfile(profileData);
-    // props.setToken("FIX THIS");
-    displayProfileInfo();
+    //Updating the database to change the client's info
+    if (hasPrefill) {
+      await updateProfile(profileData);
+    }
+    //If new client, create entry in database
+    else {
+      await createProfile(profileData);
+    }
+
+    switchProfilePage();
   };
 
-  if (isEdited) {
+  if (!hasPrefill) {
+    (async () => {
+      const profileInfo = await getProfile();
+      if (profileInfo.data != null) {
+        hasPrefill = true;
+        Object.assign(profileData, {
+          fullName: profileInfo.data.fullName,
+          addr1: profileInfo.data.addr1,
+          addr2: profileInfo.data.addr2,
+          city: profileInfo.data.city,
+          state: profileInfo.data.state,
+          zip: profileInfo.data.zip,
+        });
+      } else {
+        hasPrefill = false;
+      }
+    })().catch((err) => console.log(err.stack));
+  }
+
+  //The page to display user info and give an option to EDIT the info; the display-page
+  if (isDisplayProfilePage) {
     return (
       <div>
         <h1>Profile Information</h1>
-        <button onClick={displayProfileInfo} className={styles.button_form}>
+        <button onClick={switchProfilePage} className={styles.button_form}>
           Edit Profile
         </button>
         <div className={styles.info}>
@@ -96,15 +171,15 @@ function Profile(props) {
       </div>
     );
   }
-  //Profile form
-  else if (!isEdited) {
+  //The Page to display a form to edit or create user data; the profile form page
+  else if (!isDisplayProfilePage) {
     return (
       <div>
         <h1>Profile Information</h1>
         <form className={styles.form} onSubmit={submitHandler}>
           <div className={styles.control}>
             <label htmlFor="fullname">Full Name</label>
-            {formed ? (
+            {hasPrefill ? (
               <input
                 type="text"
                 id="fullname"
@@ -124,7 +199,7 @@ function Profile(props) {
           </div>
           <div className={styles.control}>
             <label htmlFor="address1">Address 1</label>
-            {formed ? (
+            {hasPrefill ? (
               <input
                 type="text"
                 id="address1"
@@ -144,7 +219,7 @@ function Profile(props) {
           </div>
           <div className={styles.control}>
             <label htmlFor="address2">Address 2</label>
-            {formed ? (
+            {hasPrefill ? (
               <input
                 type="text"
                 id="address2"
@@ -162,7 +237,7 @@ function Profile(props) {
           </div>
           <div className={styles.control}>
             <label htmlFor="city">City</label>
-            {formed ? (
+            {hasPrefill ? (
               <input
                 type="text"
                 id="city"
@@ -182,7 +257,7 @@ function Profile(props) {
           </div>
           <div className={styles.control}>
             <label htmlFor="state">State</label>
-            {formed ? (
+            {hasPrefill ? (
               <select
                 id="state"
                 ref={stateInputRef}
@@ -310,7 +385,7 @@ function Profile(props) {
           </div>
           <div className={styles.control}>
             <label htmlFor="zipcode">Zipcode</label>
-            {formed ? (
+            {hasPrefill ? (
               <input
                 type="number"
                 id="zipcode"
