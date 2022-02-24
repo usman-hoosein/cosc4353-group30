@@ -2,7 +2,7 @@ import { useContext, useRef, useState } from "react";
 import Axios from "axios";
 
 import styles from "./Profile.module.css";
-import LoginContext from "../contexts/login"
+import LoginContext from "../contexts/login";
 
 let profileData = {
   fullName: "",
@@ -27,7 +27,7 @@ let hasPrefill = false;
 //Fetching client info from database
 async function getProfile(login) {
   return Axios.post("/profile", {
-    username: login.username
+    username: login.username,
   })
     .then((data) => {
       console.log("Get Profile status: " + data.statusText);
@@ -41,17 +41,21 @@ async function getProfile(login) {
 
 //Sending data to back-end to update client info in the database
 async function updateProfile(data, login) {
-  Axios.post("/profile/update", {
-    username: login.username,
+  let mainData = {
     fullName: data.fullName,
     addr1: data.addr1,
     addr2: data.addr2,
     city: data.city,
     state: data.state,
     zip: data.zip,
+  };
+  Axios.post("/profile/update", {
+    username: login.username,
+    ...mainData,
   })
     .then((res) => {
       console.log("Update Profile status: " + res.statusText);
+      Object.assign(profileData, mainData);
       return res;
     })
     .catch((err) => {
@@ -61,17 +65,21 @@ async function updateProfile(data, login) {
 
 //Sending data to back-end to create client info in the database
 async function createProfile(data, login) {
-  Axios.post("/profile/create", {
-    username: login.username,
+  let mainData = {
     fullName: data.fullName,
     addr1: data.addr1,
     addr2: data.addr2,
     city: data.city,
     state: data.state,
     zip: data.zip,
+  };
+  Axios.post("/profile/create", {
+    username: login.username,
+    ...mainData,
   })
     .then((res) => {
       console.log("Create Profile status: " + res.statusText);
+      Object.assign(profileData, mainData);
       return res;
     })
     .catch((err) => {
@@ -101,15 +109,6 @@ function Profile(props) {
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    Object.assign(profileData, {
-      fullName: fullnameInputRef.current.value,
-      addr1: address1InputRef.current.value,
-      addr2: address2InputRef.current.value,
-      city: cityInputRef.current.value,
-      state: stateInputRef.current.value,
-      zip: zipcodeInputRef.current.value,
-    });
-
     //Updating the database to change the client's info
     if (hasPrefill) {
       await updateProfile(profileData, LoginCtx.Login);
@@ -118,6 +117,7 @@ function Profile(props) {
     else {
       await createProfile(profileData, LoginCtx.Login);
     }
+
     switchProfilePage();
   };
 
@@ -125,7 +125,7 @@ function Profile(props) {
     (async () => {
       const profileInfo = await getProfile(LoginCtx.Login);
       if (profileInfo.data != null) {
-        console.log("Prefilling data...")
+        console.log("Prefilling data...");
         hasPrefill = true;
         Object.assign(profileData, {
           fullName: profileInfo.data.fullName,
@@ -136,7 +136,7 @@ function Profile(props) {
           zip: profileInfo.data.zip,
         });
       } else {
-        console.log("No profile data in database")
+        console.log("No profile data in database");
         hasPrefill = false;
       }
     })().catch((err) => console.log(err.stack));
