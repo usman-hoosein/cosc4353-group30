@@ -2,11 +2,12 @@ import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 
 import Layout from "./components/layouts/Layout";
-
 import Login from "./components/login/Login";
 import Register from "./components/login/Register";
+
 import FuelQuoteHistory from "./pages/FuelQuoteHistory";
 import Profile from "./pages/Profile";
+import NotFound from "./pages/404";
 
 function App() {
   const [token, setToken] = useState(false);
@@ -25,6 +26,8 @@ function App() {
       <Routes>
         <Route path="/" element={<FuelQuoteHistory />} />
         <Route path="/profile" element={<Profile />} />
+
+        <Route component={<NotFound />} />
       </Routes>
     </Layout>
   );

@@ -1,22 +1,21 @@
 import { useRef } from "react";
 import PropTypes from "prop-types";
+import Axios from "axios";
 
 import styles from "./Login.module.css";
 
-async function loginUser(credentials) {
-  //FIX THIS: After backend is established
-  return;
-  //   fetch("/login", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(credentials),
-  //   })
-  //     .then((data) => data.json())
-  //     .catch((err) => {
-  //       console.log("loginUser Error: " + err);
-  //     });
+async function loginUser(creds) {
+  return Axios.post("/login", {
+    username: creds.username,
+    password: creds.password,
+  })
+    .then((data) => {
+      console.log("Login status: " + data.statusText);
+      return data;
+    })
+    .catch((err) => {
+      console.log("Login " + err);
+    });
 }
 
 function Login(props) {
@@ -35,7 +34,14 @@ function Login(props) {
     };
 
     const token = await loginUser(loginData);
-    props.setToken("FIX THIS");
+
+    if (token.statusText === "OK") {
+      props.setToken(token);
+    }
+    else {
+      console.log("Error logging in");
+      props.setToken(false);
+    }
   };
 
   const registerHandler = async (event) => {
@@ -49,21 +55,11 @@ function Login(props) {
       <form className={styles.form} onSubmit={submitHandler}>
         <div className={styles.control}>
           <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            ref={usernameInputRef}
-            required
-          />
+          <input type="text" id="username" ref={usernameInputRef} required />
         </div>
         <div className={styles.control}>
           <label htmlFor="password">Password</label>
-          <input
-            type="text"
-            id="password"
-            ref={passwordInputRef}
-            required
-          />
+          <input type="text" id="password" ref={passwordInputRef} required />
         </div>
         <div className={styles.actions}>
           <button>Login</button>

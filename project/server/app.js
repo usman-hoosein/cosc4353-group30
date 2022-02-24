@@ -2,6 +2,7 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 //TODO: update when database is complete
 // const pool = require('./util/database'); 
@@ -19,6 +20,8 @@ const fuelRoutes = require('./routes/fuel-quote');
 //     }
 // })
 
+app.use(express.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -26,4 +29,6 @@ app.use('/login', loginRoutes);
 app.use('/profile', profileRoutes);
 app.use('/fuel', fuelRoutes);
 
-app.listen(3000);
+const PORT = process.env.PORT || 8080;
+  
+app.listen(PORT, console.log(`Server started on port ${PORT}`));
