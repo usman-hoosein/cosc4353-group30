@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Axios from "axios";
 
 import styles from "./Profile.module.css";
+import LoginContext from "../contexts/login"
 
 let profileData = {
   fullName: "",
@@ -24,21 +25,24 @@ let exampleData = {
 let hasPrefill = false;
 
 //Fetching client info from database
-async function getProfile() {
-  return Axios.get("/profile")
+async function getProfile(login) {
+  return Axios.post("/profile", {
+    username: login.username
+  })
     .then((data) => {
-      console.log("Update Profile status: " + data.statusText);
+      console.log("Get Profile status: " + data.statusText);
       return data;
     })
     .catch((err) => {
-      console.log("Update Profile " + err);
+      console.log("Get Profile " + err);
       return err;
     });
 }
 
 //Sending data to back-end to update client info in the database
-async function updateProfile(data) {
+async function updateProfile(data, login) {
   Axios.post("/profile/update", {
+    username: login.username,
     fullName: data.fullName,
     addr1: data.addr1,
     addr2: data.addr2,
@@ -56,8 +60,9 @@ async function updateProfile(data) {
 }
 
 //Sending data to back-end to create client info in the database
-async function createProfile(data) {
+async function createProfile(data, login) {
   Axios.post("/profile/create", {
+    username: login.username,
     fullName: data.fullName,
     addr1: data.addr1,
     addr2: data.addr2,
@@ -75,6 +80,7 @@ async function createProfile(data) {
 }
 
 function Profile(props) {
+  let LoginCtx = useContext(LoginContext);
   const [isDisplayProfilePage, setisDisplayProfilePage] = useState(false);
 
   const fullnameInputRef = useRef();
@@ -106,20 +112,20 @@ function Profile(props) {
 
     //Updating the database to change the client's info
     if (hasPrefill) {
-      await updateProfile(profileData);
+      await updateProfile(profileData, LoginCtx.Login);
     }
     //If new client, create entry in database
     else {
-      await createProfile(profileData);
+      await createProfile(profileData, LoginCtx.Login);
     }
-
     switchProfilePage();
   };
 
   if (!hasPrefill) {
     (async () => {
-      const profileInfo = await getProfile();
+      const profileInfo = await getProfile(LoginCtx.Login);
       if (profileInfo.data != null) {
+        console.log("Prefilling data...")
         hasPrefill = true;
         Object.assign(profileData, {
           fullName: profileInfo.data.fullName,
@@ -130,6 +136,7 @@ function Profile(props) {
           zip: profileInfo.data.zip,
         });
       } else {
+        console.log("No profile data in database")
         hasPrefill = false;
       }
     })().catch((err) => console.log(err.stack));

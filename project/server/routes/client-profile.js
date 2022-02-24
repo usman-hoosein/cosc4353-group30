@@ -7,7 +7,7 @@ const profileController = require('../controllers/client-profile');
 const router = express.Router();
 
 // /profile => GET
-router.get('/', profileController.getProfile); //Prefills the form with previous-user data
+router.post('/', profileController.postProfile); //Prefills the form with previous-user data
 
 // /profile/update => POST
 router.post('/update', profileController.postUpdateProfile); //Updates the user-data in db with data from the form
