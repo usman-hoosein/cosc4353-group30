@@ -1,7 +1,7 @@
 # HOW TO START THE SERVER
 1. Clone the whole GitHub repo onto your local machine
 
-2. Open a terminal and locate this folder (project/client) on your machine
+2. Open a terminal (seperate from the back-end terminal) and locate this folder (project/client) on your machine
 
 3. Run 
   ### 'npm install'
