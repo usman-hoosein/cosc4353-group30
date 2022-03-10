@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', loginRoutes);
-app.use('/profile', profileRoutes);
+app.use('/profile', profileRoutes)
 app.use('/fuel', fuelRoutes);
 
 const PORT = process.env.PORT || 8080;
