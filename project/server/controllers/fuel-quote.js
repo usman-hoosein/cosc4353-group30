@@ -6,4 +6,5 @@ exports.getFuelHistory = (req, res, next) => {
 
 exports.postFuelQuote = (req, res, next) => {
   //TODO: Add Fuel Quote form to db, when db is working
+  res.send({ message: "OK" });
 };

@@ -3,15 +3,8 @@ import { useContext, useRef, useState } from "react";
 import { getProfile, updateProfile, createProfile } from "../requests/profile";
 import styles from "./Profile.module.css";
 import LoginContext from "../contexts/login";
-
-let profileData = {
-  fullName: "",
-  addr1: "",
-  addr2: "",
-  city: "",
-  state: "",
-  zip: null,
-};
+import LoadingContext from "../contexts/loading";
+import ProfileInfoContext from "../contexts/profile-info";
 
 let exampleData = {
   fullName: "John Example",
@@ -26,7 +19,10 @@ let hasPrefill = false;
 
 function Profile(props) {
   let LoginCtx = useContext(LoginContext);
-  const [isDisplayProfilePage, setisDisplayProfilePage] = useState(false);
+  let LoadingCtx = useContext(LoadingContext);
+  let ProfileInfoCtx = useContext(ProfileInfoContext);
+
+  const [isDisplayProfilePage, setisDisplayProfilePage] = useState(true);
 
   const fullnameInputRef = useRef();
   const address1InputRef = useRef();
@@ -36,49 +32,82 @@ function Profile(props) {
   const zipcodeInputRef = useRef();
 
   const switchProfilePage = () => {
-    if (!isDisplayProfilePage) {
-      //TODO: Update this so that hasPrefill state doesn't stay on the browser
-      hasPrefill = true; //permanentely sets the hasPrefill state to true since the client now has data to prefill form
-    }
     setisDisplayProfilePage(!isDisplayProfilePage); //Filter between profile display and form pages
   };
 
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    //Updating the database to change the client's info
-    if (hasPrefill) {
-      await updateProfile(profileData, LoginCtx.Login);
-    }
-    //If new client, create entry in database
-    else {
-      await createProfile(profileData, LoginCtx.Login);
-    }
+    const enteredFN = fullnameInputRef.current.value;
+    const enteredAddr1 = address1InputRef.current.value;
+    const enteredAddr2 = address2InputRef.current.value;
+    const enteredCity = cityInputRef.current.value;
+    const enteredState = stateInputRef.current.value;
+    const enteredZip = zipcodeInputRef.current.value;
 
-    switchProfilePage();
+    let dataFill = {
+      fullName: enteredFN,
+      addr1: enteredAddr1,
+      addr2: enteredAddr2,
+      city: enteredCity,
+      state: enteredState,
+      zip: enteredZip,
+    };
+
+    //Updating the database to change the client's info
+    if (ProfileInfoContext.ProfileInfo !== false)
+      updateProfile(dataFill, LoginCtx.Login)
+        .then((data) => {
+          if (data.statusText === "OK") {
+            console.log("Updated profile in db");
+            ProfileInfoCtx.updateProfileInfo(dataFill);
+            LoadingCtx.finishedLoading();
+            switchProfilePage();
+          }
+        })
+        .catch((err) => console.log(err.stack));
+    //If new client, create entry in database
+    else
+      createProfile(dataFill, LoginCtx.Login)
+        .then((data) => {
+          if (data.statusText === "OK") {
+            console.log("Created profile in db");
+            ProfileInfoCtx.updateProfileInfo(dataFill);
+            LoadingCtx.finishedLoading();
+            switchProfilePage();
+          }
+        })
+        .catch((err) => console.log(err.stack));
+    LoadingCtx.currentlyLoading();
   };
 
   //Retreiving the data from the db to prefill the form
-  if (!hasPrefill) {
+  if (!ProfileInfoCtx.ProfileInfo) {
     (async () => {
       const profileInfo = await getProfile(LoginCtx.Login);
-      if (profileInfo.data != null) {
+      let res = profileInfo.data;
+      if (res != null) {
         console.log("Prefilling data...");
         hasPrefill = true;
-        Object.assign(profileData, {
-          fullName: profileInfo.data.fullName,
-          addr1: profileInfo.data.addr1,
-          addr2: profileInfo.data.addr2,
-          city: profileInfo.data.city,
-          state: profileInfo.data.state,
-          zip: profileInfo.data.zip,
+        ProfileInfoCtx.updateProfileInfo({
+          fullName: res.fullName,
+          addr1: res.addr1,
+          addr2: res.addr2,
+          city: res.city,
+          state: res.state,
+          zip: res.zip,
         });
+        LoadingCtx.finishedLoading();
       } else {
         console.log("No profile data in database");
         hasPrefill = false;
       }
     })().catch((err) => console.log(err.stack));
+    LoadingCtx.currentlyLoading();
   }
+
+  if (ProfileInfoCtx.ProfileInfo === false) hasPrefill = false;
+  else hasPrefill = true;
 
   //The page to display user info and give an OPTION to EDIT the info; the display-page
   if (isDisplayProfilePage) {
@@ -92,25 +121,40 @@ function Profile(props) {
           <div className={styles.info_container}>
             <h2>
               Full Name:
-              <div className={styles.info_data}>{profileData.fullName}</div>
+              <div className={styles.info_data}>
+                {ProfileInfoCtx.ProfileInfo.fullName}
+              </div>
             </h2>
           </div>
           <h2>
             Address 1:
-            <div className={styles.info_data}>{profileData.addr1}</div>
+            <div className={styles.info_data}>
+              {ProfileInfoCtx.ProfileInfo.addr1}
+            </div>
           </h2>
           <h2>
             Address 2:
-            <div className={styles.info_data}>{profileData.addr2}</div>
+            <div className={styles.info_data}>
+              {ProfileInfoCtx.ProfileInfo.addr2}
+            </div>
           </h2>
           <h2>
-            City: <div className={styles.info_data}>{profileData.city}</div>
+            City:{" "}
+            <div className={styles.info_data}>
+              {ProfileInfoCtx.ProfileInfo.city}
+            </div>
           </h2>
           <h2>
-            State: <div className={styles.info_data}>{profileData.state}</div>
+            State:{" "}
+            <div className={styles.info_data}>
+              {ProfileInfoCtx.ProfileInfo.state}
+            </div>
           </h2>
           <h2>
-            Zip Code: <div className={styles.info_data}>{profileData.zip}</div>
+            Zip Code:{" "}
+            <div className={styles.info_data}>
+              {ProfileInfoCtx.ProfileInfo.zip}
+            </div>
           </h2>
         </div>
       </div>
@@ -128,7 +172,7 @@ function Profile(props) {
               <input
                 type="text"
                 id="fullname"
-                value={profileData.fullName}
+                defaultValue={ProfileInfoCtx.ProfileInfo.fullName}
                 ref={fullnameInputRef}
                 required
               />
@@ -148,7 +192,7 @@ function Profile(props) {
               <input
                 type="text"
                 id="address1"
-                value={profileData.addr1}
+                defaultValue={ProfileInfoCtx.ProfileInfo.addr1}
                 ref={address1InputRef}
                 required
               />
@@ -168,7 +212,7 @@ function Profile(props) {
               <input
                 type="text"
                 id="address2"
-                value={profileData.addr2}
+                defaultValue={ProfileInfoCtx.ProfileInfo.addr2}
                 ref={address2InputRef}
               />
             ) : (
@@ -186,7 +230,7 @@ function Profile(props) {
               <input
                 type="text"
                 id="city"
-                value={profileData.city}
+                defaultValue={ProfileInfoCtx.ProfileInfo.city}
                 ref={cityInputRef}
                 required
               />
@@ -206,63 +250,61 @@ function Profile(props) {
               <select
                 id="state"
                 ref={stateInputRef}
-                value={profileData.state}
+                defaultValue={ProfileInfoCtx.ProfileInfo.state}
                 required
               >
-                <option value="none" selected disabled hidden>
-                  Select State
-                </option>
-                <option value="AL">AL</option>
-                <option value="AK">AK</option>
-                <option value="AR">AR</option>
-                <option value="AZ">AZ</option>
-                <option value="CA">CA</option>
-                <option value="CO">CO</option>
-                <option value="CT">CT</option>
-                <option value="DC">DC</option>
-                <option value="DE">DE</option>
-                <option value="FL">FL</option>
-                <option value="GA">GA</option>
-                <option value="HI">HI</option>
-                <option value="IA">IA</option>
-                <option value="ID">ID</option>
-                <option value="IL">IL</option>
-                <option value="IN">IN</option>
-                <option value="KS">KS</option>
-                <option value="KY">KY</option>
-                <option value="LA">LA</option>
-                <option value="MA">MA</option>
-                <option value="MD">MD</option>
-                <option value="ME">ME</option>
-                <option value="MI">MI</option>
-                <option value="MN">MN</option>
-                <option value="MO">MO</option>
-                <option value="MS">MS</option>
-                <option value="MT">MT</option>
-                <option value="NC">NC</option>
-                <option value="NE">NE</option>
-                <option value="NH">NH</option>
-                <option value="NJ">NJ</option>
-                <option value="NM">NM</option>
-                <option value="NV">NV</option>
-                <option value="NY">NY</option>
-                <option value="ND">ND</option>
-                <option value="OH">OH</option>
-                <option value="OK">OK</option>
-                <option value="OR">OR</option>
-                <option value="PA">PA</option>
-                <option value="RI">RI</option>
-                <option value="SC">SC</option>
-                <option value="SD">SD</option>
-                <option value="TN">TN</option>
-                <option value="TX">TX</option>
-                <option value="UT">UT</option>
-                <option value="VT">VT</option>
-                <option value="VA">VA</option>
-                <option value="WA">WA</option>
-                <option value="WI">WI</option>
-                <option value="WV">WV</option>
-                <option value="WY">WY</option>
+                <option defaultValue="none">Select State</option>
+                <option defaultValue="AL">AL</option>
+                <option defaultValue="AK">AK</option>
+                <option defaultValue="AR">AR</option>
+                <option defaultValue="AZ">AZ</option>
+                <option defaultValue="CA">CA</option>
+                <option defaultValue="CO">CO</option>
+                <option defaultValue="CT">CT</option>
+                <option defaultValue="DC">DC</option>
+                <option defaultValue="DE">DE</option>
+                <option defaultValue="FL">FL</option>
+                <option defaultValue="GA">GA</option>
+                <option defaultValue="HI">HI</option>
+                <option defaultValue="IA">IA</option>
+                <option defaultValue="ID">ID</option>
+                <option defaultValue="IL">IL</option>
+                <option defaultValue="IN">IN</option>
+                <option defaultValue="KS">KS</option>
+                <option defaultValue="KY">KY</option>
+                <option defaultValue="LA">LA</option>
+                <option defaultValue="MA">MA</option>
+                <option defaultValue="MD">MD</option>
+                <option defaultValue="ME">ME</option>
+                <option defaultValue="MI">MI</option>
+                <option defaultValue="MN">MN</option>
+                <option defaultValue="MO">MO</option>
+                <option defaultValue="MS">MS</option>
+                <option defaultValue="MT">MT</option>
+                <option defaultValue="NC">NC</option>
+                <option defaultValue="NE">NE</option>
+                <option defaultValue="NH">NH</option>
+                <option defaultValue="NJ">NJ</option>
+                <option defaultValue="NM">NM</option>
+                <option defaultValue="NV">NV</option>
+                <option defaultValue="NY">NY</option>
+                <option defaultValue="ND">ND</option>
+                <option defaultValue="OH">OH</option>
+                <option defaultValue="OK">OK</option>
+                <option defaultValue="OR">OR</option>
+                <option defaultValue="PA">PA</option>
+                <option defaultValue="RI">RI</option>
+                <option defaultValue="SC">SC</option>
+                <option defaultValue="SD">SD</option>
+                <option defaultValue="TN">TN</option>
+                <option defaultValue="TX">TX</option>
+                <option defaultValue="UT">UT</option>
+                <option defaultValue="VT">VT</option>
+                <option defaultValue="VA">VA</option>
+                <option defaultValue="WA">WA</option>
+                <option defaultValue="WI">WI</option>
+                <option defaultValue="WV">WV</option>
+                <option defaultValue="WY">WY</option>
               </select>
             ) : (
               <select
@@ -271,60 +313,58 @@ function Profile(props) {
                 placeholder={exampleData.state}
                 required
               >
-                <option value="none" selected disabled hidden>
-                  Select State
-                </option>
-                <option value="AL">AL</option>
-                <option value="AK">AK</option>
-                <option value="AR">AR</option>
-                <option value="AZ">AZ</option>
-                <option value="CA">CA</option>
-                <option value="CO">CO</option>
-                <option value="CT">CT</option>
-                <option value="DC">DC</option>
-                <option value="DE">DE</option>
-                <option value="FL">FL</option>
-                <option value="GA">GA</option>
-                <option value="HI">HI</option>
-                <option value="IA">IA</option>
-                <option value="ID">ID</option>
-                <option value="IL">IL</option>
-                <option value="IN">IN</option>
-                <option value="KS">KS</option>
-                <option value="KY">KY</option>
-                <option value="LA">LA</option>
-                <option value="MA">MA</option>
-                <option value="MD">MD</option>
-                <option value="ME">ME</option>
-                <option value="MI">MI</option>
-                <option value="MN">MN</option>
-                <option value="MO">MO</option>
-                <option value="MS">MS</option>
-                <option value="MT">MT</option>
-                <option value="NC">NC</option>
-                <option value="NE">NE</option>
-                <option value="NH">NH</option>
-                <option value="NJ">NJ</option>
-                <option value="NM">NM</option>
-                <option value="NV">NV</option>
-                <option value="NY">NY</option>
-                <option value="ND">ND</option>
-                <option value="OH">OH</option>
-                <option value="OK">OK</option>
-                <option value="OR">OR</option>
-                <option value="PA">PA</option>
-                <option value="RI">RI</option>
-                <option value="SC">SC</option>
-                <option value="SD">SD</option>
-                <option value="TN">TN</option>
-                <option value="TX">TX</option>
-                <option value="UT">UT</option>
-                <option value="VT">VT</option>
-                <option value="VA">VA</option>
-                <option value="WA">WA</option>
-                <option value="WI">WI</option>
-                <option value="WV">WV</option>
-                <option value="WY">WY</option>
+                <option defaultValue="none">Select State</option>
+                <option defaultValue="AL">AL</option>
+                <option defaultValue="AK">AK</option>
+                <option defaultValue="AR">AR</option>
+                <option defaultValue="AZ">AZ</option>
+                <option defaultValue="CA">CA</option>
+                <option defaultValue="CO">CO</option>
+                <option defaultValue="CT">CT</option>
+                <option defaultValue="DC">DC</option>
+                <option defaultValue="DE">DE</option>
+                <option defaultValue="FL">FL</option>
+                <option defaultValue="GA">GA</option>
+                <option defaultValue="HI">HI</option>
+                <option defaultValue="IA">IA</option>
+                <option defaultValue="ID">ID</option>
+                <option defaultValue="IL">IL</option>
+                <option defaultValue="IN">IN</option>
+                <option defaultValue="KS">KS</option>
+                <option defaultValue="KY">KY</option>
+                <option defaultValue="LA">LA</option>
+                <option defaultValue="MA">MA</option>
+                <option defaultValue="MD">MD</option>
+                <option defaultValue="ME">ME</option>
+                <option defaultValue="MI">MI</option>
+                <option defaultValue="MN">MN</option>
+                <option defaultValue="MO">MO</option>
+                <option defaultValue="MS">MS</option>
+                <option defaultValue="MT">MT</option>
+                <option defaultValue="NC">NC</option>
+                <option defaultValue="NE">NE</option>
+                <option defaultValue="NH">NH</option>
+                <option defaultValue="NJ">NJ</option>
+                <option defaultValue="NM">NM</option>
+                <option defaultValue="NV">NV</option>
+                <option defaultValue="NY">NY</option>
+                <option defaultValue="ND">ND</option>
+                <option defaultValue="OH">OH</option>
+                <option defaultValue="OK">OK</option>
+                <option defaultValue="OR">OR</option>
+                <option defaultValue="PA">PA</option>
+                <option defaultValue="RI">RI</option>
+                <option defaultValue="SC">SC</option>
+                <option defaultValue="SD">SD</option>
+                <option defaultValue="TN">TN</option>
+                <option defaultValue="TX">TX</option>
+                <option defaultValue="UT">UT</option>
+                <option defaultValue="VT">VT</option>
+                <option defaultValue="VA">VA</option>
+                <option defaultValue="WA">WA</option>
+                <option defaultValue="WI">WI</option>
+                <option defaultValue="WV">WV</option>
+                <option defaultValue="WY">WY</option>
               </select>
             )}
           </div>
@@ -334,7 +374,7 @@ function Profile(props) {
               <input
                 type="number"
                 id="zipcode"
-                value={profileData.zip}
+                defaultValue={ProfileInfoCtx.ProfileInfo.zip}
                 ref={zipcodeInputRef}
                 required
               />

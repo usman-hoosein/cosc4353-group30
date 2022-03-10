@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Popup from "../components/form/Popup";
 import styles from "./FuelQuoteHistory.module.css";
+import FuelQuoteContext from "../contexts/fuel-quote-history";
 
 function FuelQuoteHistory() {
+  const HistoryCtx = useContext(FuelQuoteContext);
   const [isOpen, setIsOpen] = useState(false);
+
+  let history = HistoryCtx.FuelQuoteHistory;
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <div className={styles.container}>
       {isOpen && <Popup handleClose={togglePopup} />}
@@ -28,27 +33,17 @@ function FuelQuoteHistory() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th> 2 </th>
-                <th> 123 Gallon Blvd </th>
-                <th> 1 / 12 / 2022 </th>
-                <th> 2.01 $ </th>
-                <th> 4.02 $ </th>
-              </tr>
-              <tr>
-                <th> 15 </th>
-                <th> 432 Full Tank Road </th>
-                <th> 2 / 13 / 2022 </th>
-                <th> 2.88 $ </th>
-                <th> 42.00 $ </th>
-              </tr>
-              <tr>
-                <th> 3 </th>
-                <th> 777 Needed Gas St. </th>
-                <th> 12 / 12 / 2021 </th>
-                <th> 3.91 $ </th>
-                <th> 11.73 $ </th>
-              </tr>
+              {history.map((entry) => {
+                return (
+                  <tr>
+                    <th>{entry[0]}</th>
+                    <th>{entry[1]}</th>
+                    <th>{entry[2]}</th>
+                    <th>{entry[3]}</th>
+                    <th>{entry[4]}</th>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </span>
