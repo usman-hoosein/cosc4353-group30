@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from "react";
-import Axios from "axios";
 
+import { getProfile, updateProfile, createProfile } from "../requests/profile";
 import styles from "./Profile.module.css";
 import LoginContext from "../contexts/login";
 
@@ -23,69 +23,6 @@ let exampleData = {
 };
 
 let hasPrefill = false;
-
-//Fetching client info from database
-async function getProfile(login) {
-  return Axios.post("/profile", {
-    username: login.username,
-  })
-    .then((data) => {
-      console.log("Get Profile status: " + data.statusText);
-      return data;
-    })
-    .catch((err) => {
-      console.log("Get Profile " + err);
-      return err;
-    });
-}
-
-//Sending data to back-end to update client info in the database
-async function updateProfile(data, login) {
-  let mainData = {
-    fullName: data.fullName,
-    addr1: data.addr1,
-    addr2: data.addr2,
-    city: data.city,
-    state: data.state,
-    zip: data.zip,
-  };
-  Axios.post("/profile/update", {
-    username: login.username,
-    ...mainData,
-  })
-    .then((res) => {
-      console.log("Update Profile status: " + res.statusText);
-      Object.assign(profileData, mainData);
-      return res;
-    })
-    .catch((err) => {
-      console.log("Update Profile " + err);
-    });
-}
-
-//Sending data to back-end to create client info in the database
-async function createProfile(data, login) {
-  let mainData = {
-    fullName: data.fullName,
-    addr1: data.addr1,
-    addr2: data.addr2,
-    city: data.city,
-    state: data.state,
-    zip: data.zip,
-  };
-  Axios.post("/profile/create", {
-    username: login.username,
-    ...mainData,
-  })
-    .then((res) => {
-      console.log("Create Profile status: " + res.statusText);
-      Object.assign(profileData, mainData);
-      return res;
-    })
-    .catch((err) => {
-      console.log("Create Profile " + err);
-    });
-}
 
 function Profile(props) {
   let LoginCtx = useContext(LoginContext);
@@ -121,6 +58,7 @@ function Profile(props) {
     switchProfilePage();
   };
 
+  //Retreiving the data from the db to prefill the form
   if (!hasPrefill) {
     (async () => {
       const profileInfo = await getProfile(LoginCtx.Login);
@@ -142,7 +80,7 @@ function Profile(props) {
     })().catch((err) => console.log(err.stack));
   }
 
-  //The page to display user info and give an option to EDIT the info; the display-page
+  //The page to display user info and give an OPTION to EDIT the info; the display-page
   if (isDisplayProfilePage) {
     return (
       <div>
@@ -178,7 +116,7 @@ function Profile(props) {
       </div>
     );
   }
-  //The Page to display a form to edit or create user data; the profile form page
+  //The page to display a form to edit or create user data; the profile form page
   else if (!isDisplayProfilePage) {
     return (
       <div>

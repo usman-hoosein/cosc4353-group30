@@ -14,7 +14,6 @@ export function LoginContextProvider(props) {
 
   const context = {
     Login: userLogin,
-
     addLogin: addLoginHandler,
   };
 
