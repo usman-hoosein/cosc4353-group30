@@ -1,26 +1,23 @@
-import { useRef, useState } from "react";
-import Axios from "axios";
+import { useRef, useEffect, useContext } from "react";
 
 import styles from "./Register.module.css";
-
-async function registerUser(creds) {
-  return Axios.post("/login/register", {
-    username: creds.username,
-    password: creds.password,
-  })
-    .then((data) => {
-      console.log("Register status: " + data.statusText);
-      return data;
-    })
-    .catch((err) => {
-      console.log("Register: " + err);
-      return err;
-    });
-}
+import LoginContext from "../../contexts/login";
+import LoadingContext from "../../contexts/loading";
+import { registerUser } from "../../requests/login";
 
 function Register(props) {
+  const LoadingCtx = useContext(LoadingContext);
+  const LoginCtx = useContext(LoginContext);
+
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
+
+  var isLoading = false;
+
+  useEffect(() => {
+    if (isLoading) LoadingCtx.currentlyLoading();
+    LoadingCtx.finishedLoading();
+  });
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -33,10 +30,13 @@ function Register(props) {
       password: enteredPassword,
     };
 
+    isLoading = true;
     const token = await registerUser(loginData);
+    isLoading = false;
 
     if (token.statusText === "OK") {
       props.setNeedsRgst(false);
+      LoginCtx.registration();
     } else {
       console.log("Error Registering");
       props.setNeedsRgst(true);

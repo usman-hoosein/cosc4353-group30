@@ -1,6 +1,6 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 
-import { getProfile, updateProfile, createProfile } from "../requests/profile";
+import { updateProfile, createProfile } from "../requests/profile";
 import styles from "./Profile.module.css";
 import LoginContext from "../contexts/login";
 import LoadingContext from "../contexts/loading";
@@ -31,6 +31,13 @@ function Profile(props) {
   const stateInputRef = useRef();
   const zipcodeInputRef = useRef();
 
+  var isLoading = false;
+
+  useEffect(() => {
+    if (isLoading) LoadingCtx.currentlyLoading();
+    LoadingCtx.finishedLoading();
+  });
+
   const switchProfilePage = () => {
     setisDisplayProfilePage(!isDisplayProfilePage); //Filter between profile display and form pages
   };
@@ -54,6 +61,7 @@ function Profile(props) {
       zip: enteredZip,
     };
 
+    isLoading = true;
     //Updating the database to change the client's info
     if (ProfileInfoContext.ProfileInfo !== false)
       updateProfile(dataFill, LoginCtx.Login)
@@ -61,11 +69,14 @@ function Profile(props) {
           if (data.statusText === "OK") {
             console.log("Updated profile in db");
             ProfileInfoCtx.updateProfileInfo(dataFill);
-            LoadingCtx.finishedLoading();
+            isLoading = false;
             switchProfilePage();
           }
         })
-        .catch((err) => console.log(err.stack));
+        .catch((err) => {
+          console.log(err.stack);
+          isLoading = false;
+        });
     //If new client, create entry in database
     else
       createProfile(dataFill, LoginCtx.Login)
@@ -73,38 +84,15 @@ function Profile(props) {
           if (data.statusText === "OK") {
             console.log("Created profile in db");
             ProfileInfoCtx.updateProfileInfo(dataFill);
-            LoadingCtx.finishedLoading();
+            isLoading = false;
             switchProfilePage();
           }
         })
-        .catch((err) => console.log(err.stack));
-    LoadingCtx.currentlyLoading();
-  };
-
-  //Retreiving the data from the db to prefill the form
-  if (!ProfileInfoCtx.ProfileInfo) {
-    (async () => {
-      const profileInfo = await getProfile(LoginCtx.Login);
-      let res = profileInfo.data;
-      if (res != null) {
-        console.log("Prefilling data...");
-        hasPrefill = true;
-        ProfileInfoCtx.updateProfileInfo({
-          fullName: res.fullName,
-          addr1: res.addr1,
-          addr2: res.addr2,
-          city: res.city,
-          state: res.state,
-          zip: res.zip,
+        .catch((err) => {
+          console.log(err.stack);
+          isLoading = false;
         });
-        LoadingCtx.finishedLoading();
-      } else {
-        console.log("No profile data in database");
-        hasPrefill = false;
-      }
-    })().catch((err) => console.log(err.stack));
-    LoadingCtx.currentlyLoading();
-  }
+  };
 
   if (ProfileInfoCtx.ProfileInfo === false) hasPrefill = false;
   else hasPrefill = true;

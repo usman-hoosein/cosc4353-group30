@@ -1,24 +1,16 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import Axios from "axios";
 
+import LoginContext from "../../contexts/login";
 import styles from "./Login.module.css";
-
-async function loginUser(creds) {
-  return Axios.post("/login", {
-    username: creds.username,
-    password: creds.password,
-  })
-    .then((data) => {
-      console.log("Login status: " + data.statusText);
-      return data;
-    })
-    .catch((err) => {
-      console.log("Login " + err);
-    });
-}
+import { loginUser } from "../../requests/login";
 
 function Login(props) {
+  const LoginCtx = useContext(LoginContext);
+
+  const navigate = useNavigate();
+
   const usernameInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -36,9 +28,10 @@ function Login(props) {
     const token = await loginUser(loginData);
 
     if (token.statusText === "OK") {
+      console.log("Logged in");
       props.setToken(token);
-    }
-    else {
+      navigate("/profile");
+    } else {
       console.log("Error logging in");
       props.setToken(false);
     }

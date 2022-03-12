@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useEffect } from "react";
 
 import FuelQuoteHistoryContext from "../../contexts/fuel-quote-history";
 import ProfileInfoContext from "../../contexts/profile-info";
@@ -21,8 +21,14 @@ const Popup = (props) => {
   const dateInputRef = useRef();
   const priceInputRef = useRef();
   const totalInputRef = useRef();
-
   const address = ProfileCtx.ProfileInfo.addr1;
+
+  var isLoading = false;
+
+  useEffect(() => {
+    if (isLoading) LoadingCtx.currentlyLoading();
+    LoadingCtx.finishedLoading();
+  });
 
   function SubmitHandler(event) {
     event.preventDefault();
@@ -32,25 +38,19 @@ const Popup = (props) => {
     const enteredP = priceInputRef.current.value;
     const enteredT = totalInputRef.current.value;
 
-    let info = [
-      enteredGs,
-      address,
-      enteredDate,
-      enteredP,
-      enteredT,
-    ];
+    let info = [enteredGs, address, enteredDate, enteredP, enteredT];
 
+    isLoading = true;
     createQuote(info, LoginCtx.Login)
       .then((res) => {
         HistoryCtx.addFuelQuoteHistory(info);
-        LoadingCtx.finishedLoading();
+        isLoading = false;
         navigate("/");
         props.handleClose();
       })
       .catch((err) => {
         console.log(err);
       });
-    LoadingCtx.currentlyLoading();
   }
 
   return (

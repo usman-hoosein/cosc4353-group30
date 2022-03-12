@@ -1,9 +1,8 @@
 const Pricing = require("../models/pricing");
 
 exports.postLogin = (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
-
+  const username = req.headers.username;
+  const password = req.headers.password;
   //TODO: Update after database
   //   db.query(
   //     "SELECT * FROM users WHERE username = ? AND password = ?)",
@@ -20,6 +19,7 @@ exports.postLogin = (req, res, next) => {
   //       res.send({ err: err });
   //     });
 
+  //FIXME: Make response send status message after db
   res.send({ message: "OK" });
 };
 
@@ -43,6 +43,6 @@ exports.postRegister = (req, res, next) => {
   //       res.send({ err: err });
   //     });
 
-  //TODO: Delete after database
+  //FIXME: Make response send status message after db
   res.send({ message: "OK" });
 };

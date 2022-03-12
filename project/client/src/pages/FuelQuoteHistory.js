@@ -1,13 +1,16 @@
 import { useState, useContext } from "react";
+
 import Popup from "../components/form/Popup";
 import styles from "./FuelQuoteHistory.module.css";
+
 import FuelQuoteContext from "../contexts/fuel-quote-history";
 
 function FuelQuoteHistory() {
   const HistoryCtx = useContext(FuelQuoteContext);
+
   const [isOpen, setIsOpen] = useState(false);
 
-  let history = HistoryCtx.FuelQuoteHistory;
+  var history = HistoryCtx.FuelQuoteHistory;
 
   const togglePopup = () => {
     setIsOpen(!isOpen);

@@ -7,9 +7,9 @@ const FuelQuoteHistoryContext = createContext({
 });
 
 export function FuelQuoteHistoryContextProvider(props) {
-  const [userFuelQuoteHistory, setUserFuelQuoteHistory] = useState([]);
+  const [userFuelQuoteHistory, setUserFuelQuoteHistory] = useState(false);
 
-  function addFuleQuoteHandler(info) {
+  function addFuelQuoteHandler(info) {
     setUserFuelQuoteHistory((prevHistory) => {
       let temp = prevHistory
       temp.push(info)
@@ -18,21 +18,13 @@ export function FuelQuoteHistoryContextProvider(props) {
   }
 
   function updateFuelQuoteHistoryHandler(info) {
-    // setUserFuelQuoteHistory({
-    //   gallons: info.gallons,
-    //   addr1: info.addr1,
-    //   city: info.city,
-    //   state: info.state,
-    //   date: info.date,
-    //   price: info.price,
-    //   total: info,
-    // });
+    setUserFuelQuoteHistory(info);
   }
 
   const context = {
     FuelQuoteHistory: userFuelQuoteHistory,
     updateFuelQuoteHistory: updateFuelQuoteHistoryHandler,
-    addFuelQuoteHistory: addFuleQuoteHandler,
+    addFuelQuoteHistory: addFuelQuoteHandler,
   };
 
   return (

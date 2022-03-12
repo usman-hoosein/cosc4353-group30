@@ -2,12 +2,15 @@ import { createContext, useState } from "react";
 
 const LoginContext = createContext({
   Login: {},
+  hadRegistration: false,
   addLogin: (info) => {},
   isLoggedIn: () => {},
+  registration: () => {},
 });
 
 export function LoginContextProvider(props) {
   const [userLogin, setUserLogin] = useState(null);
+  const [justRegistered, setJustRegistered] = useState(false);
 
   function addLoginHandler(info) {
     setUserLogin({ username: info.username, password: info.password });
@@ -18,10 +21,16 @@ export function LoginContextProvider(props) {
     else return true;
   }
 
+  function registrationHandler() {
+    setJustRegistered(true);
+  }
+
   const context = {
     Login: userLogin,
+    hadRegistration: justRegistered,
     addLogin: addLoginHandler,
     isLoggedIn: isLoggedInHandler,
+    registration: registrationHandler,
   };
 
   return (
