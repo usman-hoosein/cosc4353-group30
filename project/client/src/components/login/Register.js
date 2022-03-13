@@ -34,7 +34,7 @@ function Register(props) {
     const token = await registerUser(loginData);
     isLoading = false;
 
-    if (token.statusText === "OK") {
+    if (token.statusText === "Register OK") {
       props.setNeedsRgst(false);
       LoginCtx.registration();
     } else {

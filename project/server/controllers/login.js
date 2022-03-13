@@ -20,7 +20,9 @@ exports.postLogin = (req, res, next) => {
   //     });
 
   //FIXME: Make response send status message after db
+  res.statusMessage = "Login OK"
   res.send({ message: "OK" });
+  //res.sendStatus(200);
 };
 
 exports.postRegister = (req, res, next) => {
@@ -44,5 +46,6 @@ exports.postRegister = (req, res, next) => {
   //     });
 
   //FIXME: Make response send status message after db
+  res.statusMessage = "Register OK"
   res.send({ message: "OK" });
 };

@@ -27,7 +27,7 @@ function Login(props) {
 
     const token = await loginUser(loginData);
 
-    if (token.statusText === "OK") {
+    if (token.statusText === "Login OK") {
       console.log("Logged in");
       props.setToken(token);
       navigate("/profile");

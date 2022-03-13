@@ -66,7 +66,7 @@ function Profile(props) {
     if (ProfileInfoContext.ProfileInfo !== false)
       updateProfile(dataFill, LoginCtx.Login)
         .then((data) => {
-          if (data.statusText === "OK") {
+          if (data.statusText === "Profile Update OK") {
             console.log("Updated profile in db");
             ProfileInfoCtx.updateProfileInfo(dataFill);
             isLoading = false;
@@ -81,7 +81,7 @@ function Profile(props) {
     else
       createProfile(dataFill, LoginCtx.Login)
         .then((data) => {
-          if (data.statusText === "OK") {
+          if (data.statusText === "Profile Create OK") {
             console.log("Created profile in db");
             ProfileInfoCtx.updateProfileInfo(dataFill);
             isLoading = false;

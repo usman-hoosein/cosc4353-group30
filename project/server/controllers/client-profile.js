@@ -12,6 +12,7 @@ exports.postProfile = (req, res, next) => {
     state: "TX",
     zip: 42069,
   };
+  res.statusMessage = "Profile OK";
   res.send(data);
 };
 
@@ -26,6 +27,7 @@ exports.postUpdateProfile = (req, res, next) => {
     zip: req.zip,
   };
   //TODO: Update client's info in db; afterwards, send status of database query
+  res.statusMessage = "Profile Update OK";
   res.send(data);
 };
 
@@ -40,5 +42,6 @@ exports.postCreateProfile = (req, res, next) => {
     zip: req.zip,
   };
   //TODO: Create client's info in db; afterwards, send status of database query
+  res.statusMessage = "Profile Create OK";
   res.send(data);
 };
