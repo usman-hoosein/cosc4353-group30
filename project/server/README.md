@@ -15,12 +15,14 @@
 
 # HOW TO RUN UNIT TESTS
 
-1. Run
-  ### 'npm i -D jest'
+1. Open new terminal and cd into project/server
 
 2. Run
+  ### 'npm i -D jest'
+
+3. Run
   ### 'npm test'
 
-3. All unit tests should run and pass
+4. All unit tests should run and pass
 
 ## Press 'Ctrl + C' in server terminal to terminate server.
