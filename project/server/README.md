@@ -12,3 +12,15 @@
 5. The back-end server should begin running
 
 ## To shut down the server, hit 'Ctrl + C' on the terminal where the server is running
+
+# HOW TO RUN UNIT TESTS
+
+1. Run
+  ### 'npm i -D jest'
+
+2. Run
+  ### 'npm test'
+
+3. All unit tests should run and pass
+
+## Press 'Ctrl + C' in server terminal to terminate server.
