@@ -101,6 +101,7 @@ async function getQuoteHistory(login) {
     });
 }
 
+//Dummy data for test
 const userInfo = {
     username: "testUser",
     password: "testPass"
