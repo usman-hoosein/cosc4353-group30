@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS UserCredentials;
 
 CREATE TABLE UserCredentials(
     username    VARCHAR(20) NOT NULL PRIMARY KEY,
-    pass        VARCHAR(20) NOT NULL
+    pass        VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE ClientInformation(
@@ -30,9 +30,9 @@ CREATE TABLE FuelQuote(
     CONSTRAINT fk_client_id_con FOREIGN KEY(client_id) REFERENCES ClientInformation(client_id)
 );
 
-INSERT INTO UserCredentials(username, pass) VALUES ('mooncoast_services', 'luv2drill');
-INSERT INTO UserCredentials(username, pass) VALUES ('spongegod69', 'sandyscheeks');
-INSERT INTO UserCredentials(username, pass) VALUES ('edp445', 'cupcakes');
+INSERT INTO UserCredentials(username, pass) VALUES ('mooncoast_services', 'c64d0c34f1aab92d579ebe3de95859fa:fb001eb775cfa3ddeba361c038b468dbbfbc718e44a6ebec82d152fbdbe58948');     /*password: luv2drill*/
+INSERT INTO UserCredentials(username, pass) VALUES ('spongegod69', 'f86620eed1c2007a238236899027ba23:22ec7f0b902212adad33891a76a84e40cb9ca27b7e649e56df116565264dd16b');         /*password: sandyscheeks*/
+INSERT INTO UserCredentials(username, pass) VALUES ('edp445', '2562ae863a2bce67c10e1723bb57c31d:a4fd0340977796a8ede723a1412527e1b30a7e4c23de67978326da3dfc1b4caf');                  /*password: cupcakes*/
 
 INSERT INTO ClientInformation(client_id, full_name, addr1, addr2, city, us_state, zipcode, username) VALUES (10000, 'Alec Brakes', '111 Good Ln', 'Apt 22', 'Houston', 'TX', 77077, 'mooncoast_services');
 INSERT INTO ClientInformation(client_id, full_name, addr1, addr2, city, us_state, zipcode, username) VALUES (10001, 'Spongebob Squarepants', '123 Conch St', NULL, 'Bikini Bottom', 'TX', 42069, 'spongegod69');

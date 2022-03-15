@@ -1,6 +1,6 @@
 const pg = require('pg')
 const ClientClass = pg.Client
-const pgUrl = ""    //elephantSQL url goes here
+const pgUrl = ""    //ElephantSQL url goes here. 
 const client = new ClientClass(pgUrl)
 
 const fs = require('fs')
@@ -29,6 +29,7 @@ async function main(){
     await initialize_tables();
     await show_tables();
     client.end()
+    console.log('Reinitialization complete!')
 }
 
 main();
