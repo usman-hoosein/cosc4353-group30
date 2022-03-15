@@ -1,10 +1,6 @@
 const pg = require('pg')
 const ClientClass = pg.Client
-<<<<<<< HEAD
 const pgUrl = ""    //elephantSQL url goes here
-=======
-const pgUrl = "postgres://ntzpalcg:1OMZq1vH_90_6b6INK3UFjdmRBbUMAx1@ziggy.db.elephantsql.com/ntzpalcg"
->>>>>>> e3ed9b25e9cb965eb28881f0ffeb4f7aad9816dd
 const client = new ClientClass(pgUrl)
 
 const fs = require('fs')
