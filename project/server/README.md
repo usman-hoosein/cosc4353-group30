@@ -13,16 +13,22 @@
 
 ## To shut down the server, hit 'Ctrl + C' on the terminal where the server is running
 
+
 # HOW TO RUN UNIT TESTS
 
-1. Open new terminal and cd into project/server
+1. Open new terminal and cd into project/server. Run 'npm install' if you haven't already.
 
 2. Run
-  ### 'npm i -D jest'
-
-3. Run
   ### 'npm test'
 
-4. All unit tests should run and pass
+3. All unit tests should run and pass
 
 ## Press 'Ctrl + C' in server terminal to terminate server.
+
+
+# HOW TO INITIALIZE / RESET TABLES
+
+1. cd into project/server folder.
+
+2. Run
+  ### 'node initialize_tables.js'
