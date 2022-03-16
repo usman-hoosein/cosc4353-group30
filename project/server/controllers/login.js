@@ -1,8 +1,33 @@
 const Pricing = require("../models/pricing");
+const ep = require('../helpers/login/encrypt_pass.js');
+const qry = require('../helpers/login/db_queries.js')
 
-exports.postLogin = (req, res, next) => {
+exports.postLogin = async (req, res, next) => {
   const username = req.headers.username;
   const password = req.headers.password;
+
+  check_user = await qry.user_exists(username);   //Check if the user exists in the database
+  if (!check_user){
+    console.log('User does not exist.')
+    res.statusMessage = "Login failed"
+    res.send({ message: "Not OK" })
+  }
+  else {
+    check_pass = await qry.check_password(username, password);  //Check that the correct password was entered for the user.
+    if (!check_pass){
+      console.log('Wrong password.')
+      res.statusMessage = "Login failed"
+      res.send({ message: "Not OK" })
+    }
+    else {
+      //User passes authentication
+      console.log('Welcome')
+      res.statusMessage = "Login OK"
+      res.send({ message: "OK" });
+    }
+  }
+
+
   //TODO: Update after database
   //   db.query(
   //     "SELECT * FROM users WHERE username = ? AND password = ?)",
@@ -18,14 +43,9 @@ exports.postLogin = (req, res, next) => {
   //     .catch((err) => {
   //       res.send({ err: err });
   //     });
-
-  //FIXME: Make response send status message after db
-  res.statusMessage = "Login OK"
-  res.send({ message: "OK" });
-  //res.sendStatus(200);
 };
 
-exports.postRegister = (req, res, next) => {
+exports.postRegister = async (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 

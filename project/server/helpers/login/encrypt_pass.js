@@ -15,6 +15,8 @@ function decrypt_and_check(entered_pass, salt_hash_pass){
     return timingSafeEqual(hashed_buffer, key_buffer);
 }
 
+module.exports = { encrypt, decrypt_and_check }
+
 /*
 //For testing
 the_pass = 'testhere';

@@ -1,6 +1,6 @@
 const pg = require('pg')
 const ClientClass = pg.Client
-const pgUrl = ""    //ElephantSQL url goes here. 
+const pgUrl = "postgres://ntzpalcg:1OMZq1vH_90_6b6INK3UFjdmRBbUMAx1@ziggy.db.elephantsql.com/ntzpalcg"    //ElephantSQL url goes here. 
 const client = new ClientClass(pgUrl)
 
 const fs = require('fs')
@@ -24,12 +24,22 @@ async function show_tables(){
     console.log(result.rows);
 }
 
+/*
+async function for_testing(username, password){
+    result = await client.query(`SELECT * FROM UserCredentials WHERE username = '${username}' AND pass = '${password}'`);
+    console.log(result.rows[0].pass)
+}
+*/
+
+
 async function main(){
-    client.connect()
+    client.connect();
     await initialize_tables();
     await show_tables();
-    client.end()
+    //await for_testing('mooncoast_services', 'c64d0c34f1aab92d579ebe3de95859fa:fb001eb775cfa3ddeba361c038b468dbbfbc718e44a6ebec82d152fbdbe58948');
+    client.end();
     console.log('Reinitialization complete!')
 }
 
 main();
+// node initialize_tables.js
