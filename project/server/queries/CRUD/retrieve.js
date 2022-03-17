@@ -1,6 +1,6 @@
-import { query } from "../query";
+const query = require("../query");
 
-export async function getClientInfo(username) {
+async function getClientInfo(username) {
   let text = "SELECT * FROM ClientInformation WHERE username=$1";
   let values = [username];
 
@@ -12,7 +12,7 @@ export async function getClientInfo(username) {
   }
 }
 
-export async function getFuelQuote(username) {
+async function getFuelQuote(username) {
   let text = "SELECT * FROM FuelQuote WHERE username=$1";
   let values = [username];
 
@@ -23,3 +23,5 @@ export async function getFuelQuote(username) {
     throw err;
   }
 }
+
+module.exports = { getClientInfo: getClientInfo, getFuelQuote: getFuelQuote };

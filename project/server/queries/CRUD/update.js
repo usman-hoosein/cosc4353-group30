@@ -1,6 +1,7 @@
-import { query } from "../query";
+const query = require("../query");
 
-export async function updateClientInfo(
+
+async function updateClientInfo(
   username,
   full_name,
   addr1,
@@ -21,3 +22,5 @@ export async function updateClientInfo(
     throw err;
   }
 }
+
+module.exports = { updateClientInfo: updateClientInfo };

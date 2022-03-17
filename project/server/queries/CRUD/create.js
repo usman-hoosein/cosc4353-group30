@@ -1,6 +1,6 @@
-import { query } from "../query";
+const query = require("../query");
 
-export async function insertUserCreds(username, password) {
+async function insertUserCreds(username, password) {
   let text = "INSERT INTO UserCredentials(username, pass) VALUES ($1, $2);";
   let values = [username, password];
 
@@ -12,7 +12,7 @@ export async function insertUserCreds(username, password) {
   }
 }
 
-export async function insertClientInfo(
+async function insertClientInfo(
   username,
   full_name,
   addr1,
@@ -34,7 +34,7 @@ export async function insertClientInfo(
   }
 }
 
-export async function insertFuelQuote(
+async function insertFuelQuote(
   username,
   date_requested,
   date_delivered,
@@ -61,3 +61,9 @@ export async function insertFuelQuote(
     throw err;
   }
 }
+
+module.exports = {
+  insertClientInfo: insertClientInfo,
+  insertFuelQuote: insertFuelQuote,
+  insertUserCreds: insertUserCreds,
+};
