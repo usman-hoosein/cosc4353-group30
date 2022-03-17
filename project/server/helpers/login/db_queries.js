@@ -33,6 +33,13 @@ async function check_password(username, password){
     }
 }
 
+async function sign_up(username, password){
+    const ClientClass = pg.Client
+    const client = new ClientClass(pgUrl)
+    client.connect();
+    
+}
+
 module.exports = { user_exists, check_password }
 
 //FOR TESTING node db_queries.js
