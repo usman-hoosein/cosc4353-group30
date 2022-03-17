@@ -2,16 +2,8 @@ const Pricing = require("../models/pricing");
 
 exports.postProfile = (req, res, next) => {
   //TODO: Get client data from db to prefill profile form;
-  // for now, sends dummy data
   const username = req.headers.username;
-  const data = {
-    fullName: "Spongebob Squarepants",
-    addr1: "123 Conch St.",
-    addr2: "",
-    city: "Bikini Bottom",
-    state: "TX",
-    zip: 42069,
-  };
+  
   res.statusMessage = "Profile OK";
   res.send(data);
 };

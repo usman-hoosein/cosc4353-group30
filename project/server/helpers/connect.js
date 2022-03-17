@@ -1,6 +1,5 @@
 const pg = require('pg')
 
-
 async function new_client(){
     const ClientClass = pg.Client
     const pgUrl = "postgres://ntzpalcg:1OMZq1vH_90_6b6INK3UFjdmRBbUMAx1@ziggy.db.elephantsql.com/ntzpalcg";     //ElephantSQL url goes here. 
