@@ -11,7 +11,7 @@ export async function updateClientInfo(username, cols = [], newVals = []) {
     else text += ", " + cols[i] + "=$" + (i + 1);
   }
 
-  text += " WHERE username=$" + cols.length();
+  text += " WHERE username=$" + (cols.length() + 1);
 
   query(text, values)
     .then((res) => {})
