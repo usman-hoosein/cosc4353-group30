@@ -1,7 +1,6 @@
 const Pricing = require("../models/pricing");
 const ep = require('../helpers/login/encrypt_pass.js');
 const qry = require('../helpers/login/db_queries.js')
-const vu = require('../helpers/login/valid_username')
 
 exports.postLogin = async (req, res, next) => {
   const username = req.headers.username;
@@ -39,11 +38,23 @@ exports.postRegister = async (req, res, next) => {
     res.statusMessage = "Registration failed"
     res.send({ message: "Not OK" })
   }
+  else if (!/^[a-zA-Z][a-zA-Z0-9]{0,19}$/.test(username)){
+    console.log('Invalid Username. Requirements:\nStarts with letter\nLess than 20 characters\nContains no spaces or special characters\n');
+    res.statusMessage = "Registration failed"
+    res.send({ message: "Not OK" })
+  }
+  else if (!/^.{8,20}$/.test(password)){
+    console.log('Invalid Password. Must be at least 8 and at most 20 characters long.')
+    res.statusMessage = "Registration failed"
+    res.send({ message: "Not OK" })
+  }
   else {
-    //check if username is valid then create new entry in db
+    //FIXME: Register user to db
+    console.log('Registration complete!');
+    res.statusMessage = "Register OK"
+    res.send({ message: "OK" });
   }
 
   //FIXME: Make response send status message after db
-  res.statusMessage = "Register OK"
-  res.send({ message: "OK" });
+  
 };
