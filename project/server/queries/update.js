@@ -1,17 +1,18 @@
 import { query } from "./query";
 
-//Pass an array of columns to be updated and their corresponding new values as the 2nd
-// and third arguements (i.e. cols and newVals)
-export async function updateClientInfo(username, cols = [], newVals = []) {
-  let text = "UPDATE ClientInformation SET ";
-  let values = [...newVals, username];
-
-  for (let i = 0; i < cols.length(); i++) {
-    if (i == 0) text += cols[i] + "=$" + (i + 1);
-    else text += ", " + cols[i] + "=$" + (i + 1);
-  }
-
-  text += " WHERE username=$" + (cols.length() + 1);
+export async function updateClientInfo(
+  username,
+  full_name,
+  addr1,
+  addr2,
+  city,
+  us_state,
+  zipcode
+) {
+  let text =
+    "UPDATE ClientInformation SET full_name=$1, addr1=$2, addr2=$3, city=$4, us_state=$5, zipcode=$6 " +
+    "WHERE username=$7";
+  let values = [full_name, addr1, addr2, city, us_state, zipcode, username];
 
   query(text, values)
     .then((res) => {})
