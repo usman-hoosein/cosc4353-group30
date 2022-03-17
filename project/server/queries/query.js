@@ -1,6 +1,6 @@
 const pool = require("../util/database");
 
-export async function query(text, vals) {
+async function query(text, vals) {
   const client = await pool.connect();
   try {
     let res = await client.query(text, vals);
@@ -11,3 +11,5 @@ export async function query(text, vals) {
     throw err;
   }
 }
+
+module.exports = query;

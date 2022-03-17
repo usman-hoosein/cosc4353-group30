@@ -1,13 +1,15 @@
 const Pricing = require("../models/pricing");
-import { getClientInfo } from "../queries/CRUD/retrieve";
-import { updateClientInfo } from "../queries/CRUD/update";
-import { insertClientInfo } from "../queries/CRUD/create";
+
+const get = require("../queries/CRUD/retrieve");
+const update = require("../queries/CRUD/update");
+const create = require("../queries/CRUD/create.js");
+
 
 exports.postProfile = async (req, res, next) => {
   const username = req.headers.username;
   let data = [];
   try {
-    data = (await getClientInfo(username)).rows();
+    data = (await get.getClientInfo(username)).rows();
     res.statusMessage = "Profile OK";
   } catch (err) {
     console.log(err.stack);
@@ -27,7 +29,7 @@ exports.postUpdateProfile = (req, res, next) => {
 
   let data = [];
   try {
-    data = updateClientInfo(username, fullName, addr1, addr2, city, state, zip);
+    data = update.updateClientInfo(username, fullName, addr1, addr2, city, state, zip);
     res.statusMessage = "Profile Update OK";
   } catch (err) {
     console.log(err.stack);
@@ -48,7 +50,7 @@ exports.postCreateProfile = (req, res, next) => {
 
   let data = [];
   try {
-    data = insertClientInfo(username, fullName, addr1, addr2, city, state, zip);
+    data = create.insertClientInfo(username, fullName, addr1, addr2, city, state, zip);
     res.statusMessage = "Profile Create OK";
   } catch (err) {
     console.log(err.stack);
