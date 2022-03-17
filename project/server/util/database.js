@@ -16,10 +16,10 @@ pool.on("error", (err, client) => {
 });
 
 // Setting the target schema
-pool.query("SET SCHEMA '" + creds.schema + "';", (err, res) => {
-    if (err) {
-      console.log(err.stack);
-    }
-  });
+// pool.query("SET SCHEMA '" + creds.schema + "';", (err, res) => {
+//     if (err) {
+//       console.log(err.stack);
+//     }
+//   });
 
 module.exports = pool;

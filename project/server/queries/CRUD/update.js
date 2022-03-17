@@ -1,4 +1,4 @@
-import { query } from "./query";
+import { query } from "../query";
 
 export async function updateClientInfo(
   username,

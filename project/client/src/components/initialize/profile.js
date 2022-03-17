@@ -21,21 +21,24 @@ function InitializeProfile(props) {
   if (!ProfileInfoCtx.ProfileInfo) {
     isLoading = true;
     (async () => {
-      const profileInfo = await getProfile(LoginCtx.Login);
-      let res = profileInfo.data;
-      if (res != null) {
-        console.log("Profile initialized");
-        ProfileInfoCtx.updateProfileInfo({
-          fullName: res.fullName,
-          addr1: res.addr1,
-          addr2: res.addr2,
-          city: res.city,
-          state: res.state,
-          zip: res.zip,
-        });
-      } else {
-        console.log("No profile data in database");
+      try {
+        const profileInfo = await getProfile(LoginCtx.Login);
+        let res = profileInfo.data[0];
+        if (res != null) {
+          console.log("Profile initialized");
+          ProfileInfoCtx.updateProfileInfo({
+            fullName: res.fullName,
+            addr1: res.addr1,
+            addr2: res.addr2,
+            city: res.city,
+            state: res.state,
+            zip: res.zip,
+          });
+        } else console.log("No profile data in database");
+      } catch (err) {
+        console.log(err.stack);
       }
+
       props.setInit(false);
       isLoading = false;
     })().catch((err) => {

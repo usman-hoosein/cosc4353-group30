@@ -3,6 +3,5 @@
     "password": "",
     "host": "localhost",
     "database": "",
-    "schema": "",
     "port": 5432
 }

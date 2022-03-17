@@ -1,4 +1,4 @@
-import { query } from "./query";
+import { query } from "../query";
 
 export async function insertUserCreds(username, password) {
   let text = "INSERT INTO UserCredentials(username, pass) VALUES ($1, $2);";
