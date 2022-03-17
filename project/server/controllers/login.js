@@ -27,23 +27,6 @@ exports.postLogin = async (req, res, next) => {
       res.send({ message: "OK" });
     }
   }
-
-
-  //TODO: Update after database
-  //   db.query(
-  //     "SELECT * FROM users WHERE username = ? AND password = ?)",
-  //     [username, password],
-  //   );
-  //     .then((res) => {
-  //       if (res) {
-  //         res.send(res);
-  //       } else {
-  //         res.send({ message: "Incorrect username or password" });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       res.send({ err: err });
-  //     });
 };
 
 exports.postRegister = async (req, res, next) => {
@@ -59,23 +42,6 @@ exports.postRegister = async (req, res, next) => {
   else {
     //check if username is valid then create new entry in db
   }
-
-
-  //TODO: Update after database
-  //   db.query("INSERT INTO users (username, password) VALUES (?, ?)", [
-  //     username,
-  //     password,
-  //   ])
-  //     .then((res) => {
-  //       if (res) {
-  //         res.send(res);
-  //       } else {
-  //         res.send({ message: "Error registering client" });
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       res.send({ err: err });
-  //     });
 
   //FIXME: Make response send status message after db
   res.statusMessage = "Register OK"
