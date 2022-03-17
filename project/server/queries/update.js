@@ -14,9 +14,10 @@ export async function updateClientInfo(
     "WHERE username=$7";
   let values = [full_name, addr1, addr2, city, us_state, zipcode, username];
 
-  query(text, values)
-    .then((res) => {})
-    .catch((err) => {
-      console.log(err.stack);
-    });
+  try {
+    let res = await query(text, values);
+    return res;
+  } catch (err) {
+    throw err;
+  }
 }

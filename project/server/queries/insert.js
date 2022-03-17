@@ -4,11 +4,12 @@ export async function insertUserCreds(username, password) {
   let text = "INSERT INTO UserCredentials(username, pass) VALUES ($1, $2);";
   let values = [username, password];
 
-  query(text, values)
-    .then((res) => {})
-    .catch((err) => {
-      console.log(err.stack);
-    });
+  try {
+    let res = await query(text, values);
+    return res;
+  } catch (err) {
+    throw err;
+  }
 }
 
 export async function insertClientInfo(
@@ -25,11 +26,12 @@ export async function insertClientInfo(
     "VALUES ($1, $2, $3, $4, $5, $6, $7);";
   let values = [username, full_name, addr1, addr2, city, state, zip];
 
-  query(text, values)
-    .then((res) => {})
-    .catch((err) => {
-      console.log(err.stack);
-    });
+  try {
+    let res = await query(text, values);
+    return res;
+  } catch (err) {
+    throw err;
+  }
 }
 
 export async function insertFuelQuote(
@@ -52,9 +54,10 @@ export async function insertFuelQuote(
     total_paid,
   ];
 
-  query(text, values)
-    .then((res) => {})
-    .catch((err) => {
-      console.log(err.stack);
-    });
+  try {
+    let res = await query(text, values);
+    return res;
+  } catch (err) {
+    throw err;
+  }
 }
