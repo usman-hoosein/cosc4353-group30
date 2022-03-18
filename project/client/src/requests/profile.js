@@ -2,9 +2,13 @@ import Axios from "axios";
 
 //Fetching client info from database
 export async function getProfile(login) {
-  return Axios.post("/profile", {
-    headers: { username: login.username },
-  })
+  return Axios.post(
+    "/profile",
+    {},
+    {
+      headers: { username: login.username },
+    }
+  )
     .then((data) => {
       return data;
     })

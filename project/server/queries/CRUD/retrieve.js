@@ -3,7 +3,6 @@ const query = require("../query");
 async function getClientInfo(username) {
   let text = "SELECT * FROM ClientInformation WHERE username=$1";
   let values = [username];
-
   try {
     let res = await query(text, values);
     return res;

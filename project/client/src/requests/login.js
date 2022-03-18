@@ -1,12 +1,16 @@
 import Axios from "axios";
 
 export async function loginUser(creds) {
-  return Axios.post("/login", {}, {
-    headers: {
-      username: creds.username,
-      password: creds.password,
-    },
-  })
+  return Axios.post(
+    "/login",
+    {},
+    {
+      headers: {
+        username: creds.username,
+        password: creds.password,
+      },
+    }
+  )
     .then((data) => {
       return data;
     })
@@ -16,12 +20,17 @@ export async function loginUser(creds) {
 }
 
 export async function registerUser(creds) {
-  return Axios.post("/login/register", {
-    username: creds.username,
-    password: creds.password,
-  })
+  return Axios.post(
+    "/login/register",
+    {},
+    {
+      headers: {
+        username: creds.username,
+        password: creds.password,
+      },
+    }
+  )
     .then((data) => {
-      console.log("Register status: " + data.statusText);
       return data;
     })
     .catch((err) => {

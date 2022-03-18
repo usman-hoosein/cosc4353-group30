@@ -22,7 +22,9 @@ function Profile(props) {
   let LoadingCtx = useContext(LoadingContext);
   let ProfileInfoCtx = useContext(ProfileInfoContext);
 
-  const [isDisplayProfilePage, setisDisplayProfilePage] = useState(true);
+  let [isDisplayProfilePage, setisDisplayProfilePage] = useState(
+    !LoginCtx.hadRegistration
+  );
 
   const fullnameInputRef = useRef();
   const address1InputRef = useRef();
@@ -63,7 +65,7 @@ function Profile(props) {
 
     isLoading = true;
     //Updating the database to change the client's info
-    if (ProfileInfoContext.ProfileInfo !== false)
+    if (ProfileInfoCtx.ProfileInfo !== false)
       updateProfile(dataFill, LoginCtx.Login)
         .then((data) => {
           if (data.statusText === "Profile Update OK") {
@@ -78,7 +80,7 @@ function Profile(props) {
           isLoading = false;
         });
     //If new client, create entry in database
-    else
+    else {
       createProfile(dataFill, LoginCtx.Login)
         .then((data) => {
           if (data.statusText === "Profile Create OK") {
@@ -92,6 +94,7 @@ function Profile(props) {
           console.log(err.stack);
           isLoading = false;
         });
+    }
   };
 
   if (ProfileInfoCtx.ProfileInfo === false) hasPrefill = false;
