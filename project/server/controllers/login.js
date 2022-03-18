@@ -28,8 +28,8 @@ exports.postLogin = async (req, res, next) => {
 };
 
 exports.postRegister = async (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const username = req.headers.username;
+  const password = req.headers.password;
   //console.log(username)
   //console.log(password)
 
