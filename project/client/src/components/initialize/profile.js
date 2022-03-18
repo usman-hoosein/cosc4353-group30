@@ -37,7 +37,6 @@ function InitializeProfile(props) {
           });
         } else {
           console.log("No profile data in database");
-          LoginCtx.registration();
         }
       } catch (err) {
         console.log(err.stack);
