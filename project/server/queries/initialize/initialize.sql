@@ -16,19 +16,19 @@ CREATE TABLE ClientInformation(
     us_state    VARCHAR(20) NOT NULL,
     zipcode     INTEGER NOT NULL,
     CONSTRAINT fk_user_con FOREIGN KEY(username) REFERENCES UserCredentials(username) 
-        ON DELETE CASCADE,
+        ON DELETE CASCADE
 );
 
 CREATE TABLE FuelQuote(
-    quote_id            INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    username           INTEGER NOT NULL,
+    quote_id            SERIAL PRIMARY KEY,
+    username           VARCHAR(20) NOT NULL,
     date_requested      DATE NOT NULL,
     date_delivered      DATE NOT NULL,
     gallons_requested   INTEGER NOT NULL,
     price_per_gallon    MONEY NOT NULL,
     total_paid          MONEY NOT NULL,
     CONSTRAINT fk_username_con FOREIGN KEY(username) REFERENCES UserCredentials(username)
-        ON DELETE CASCADE,
+        ON DELETE CASCADE
 );
 
 INSERT INTO UserCredentials(username, pass) VALUES ('mooncoast_services', 'c64d0c34f1aab92d579ebe3de95859fa:fb001eb775cfa3ddeba361c038b468dbbfbc718e44a6ebec82d152fbdbe58948');     /*password: luv2drill*/
