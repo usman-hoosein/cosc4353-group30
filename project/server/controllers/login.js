@@ -1,3 +1,7 @@
+/*
+  create.insertUserCreds(username, password): Inserts the new username and password into the ClientInformation table
+*/
+
 const Pricing = require("../models/pricing");
 const ep = require("../helpers/login/encrypt_pass.js");
 const qry = require("../helpers/login/db_queries.js");
