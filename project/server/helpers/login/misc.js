@@ -3,13 +3,12 @@ const pgUrl = "postgres://ntzpalcg:1OMZq1vH_90_6b6INK3UFjdmRBbUMAx1@ziggy.db.ele
 const conn = require('../connect.js')
 const ep = require('./encrypt_pass.js')
 
+const get = require("../../queries/CRUD/retrieve");
+const update = require("../../queries/CRUD/update");
+const create = require("../../queries/CRUD/create.js");
+
 async function user_exists(username){
-    const ClientClass = pg.Client
-    const client = new ClientClass(pgUrl)
-    client.connect()
-    result = await client.query(`SELECT * FROM UserCredentials WHERE username = '${username}';`);
-    client.end()
-    //console.log(result.rows)
+    result = await get.getUserCreds(username)
     if (result.rows.length == 1) {
         return true;
     }
@@ -19,11 +18,7 @@ async function user_exists(username){
 }
 
 async function check_password(username, password){
-    const ClientClass = pg.Client
-    const client = new ClientClass(pgUrl)
-    client.connect();
-    result = await client.query(`SELECT pass FROM UserCredentials WHERE username = '${username}'`);
-    client.end();
+    result = await get.getUserCreds(username)
     correct_pass_salt_hash = result.rows[0].pass;
     if (ep.decrypt_and_check(password, correct_pass_salt_hash)){
         return true;
@@ -34,9 +29,9 @@ async function check_password(username, password){
 }
 
 async function sign_up(username, password){
-    const ClientClass = pg.Client
-    const client = new ClientClass(pgUrl)
-    client.connect();
+    //
+    const encrypted_password = ep.encrypt(password);
+    create.insertUserCreds(username, encrypted_password);
     
 }
 

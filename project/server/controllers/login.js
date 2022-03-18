@@ -1,6 +1,6 @@
 const Pricing = require("../models/pricing");
 const ep = require('../helpers/login/encrypt_pass.js');
-const qry = require('../helpers/login/db_queries.js')
+const qry = require('../helpers/login/misc.js')
 
 exports.postLogin = async (req, res, next) => {
   const username = req.headers.username;
@@ -49,7 +49,7 @@ exports.postRegister = async (req, res, next) => {
     res.send({ message: "Not OK" })
   }
   else {
-    //FIXME: Register user to db
+    qry.sign_up(username, password);
     console.log('Registration complete!');
     res.statusMessage = "Register OK"
     res.send({ message: "OK" });

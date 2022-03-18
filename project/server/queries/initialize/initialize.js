@@ -55,4 +55,4 @@ async function main() {
 }
 
 main();
-// node initialize_tables.js
+// node initialize.js
