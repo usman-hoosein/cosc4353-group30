@@ -27,13 +27,14 @@ function Login(props) {
 
     const token = await loginUser(loginData);
 
+    //TODO: Change this so if the login fails, the user is prompted to re-login
     if (token.statusText === "Login OK") {
       console.log("Logged in");
-      props.setToken(token);
+      props.setToken(loginData);
+      console.log("Navigating to profile page...");
       navigate("/profile");
     } else {
       console.log("Error logging in");
-      props.setToken(false);
     }
   };
 

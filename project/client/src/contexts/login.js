@@ -22,7 +22,7 @@ export function LoginContextProvider(props) {
   }
 
   function registrationHandler() {
-    setJustRegistered(true);
+    setJustRegistered(!justRegistered);
   }
 
   const context = {

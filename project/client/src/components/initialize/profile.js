@@ -23,18 +23,21 @@ function InitializeProfile(props) {
     (async () => {
       try {
         const profileInfo = await getProfile(LoginCtx.Login);
-        let res = profileInfo.data[0];
-        if (res != null) {
+        let res = profileInfo.data.rows;
+        if (res.length !== 0) {
+          res = res[0];
           console.log("Profile initialized");
           ProfileInfoCtx.updateProfileInfo({
-            fullName: res.fullName,
+            fullName: res.full_name,
             addr1: res.addr1,
             addr2: res.addr2,
             city: res.city,
-            state: res.state,
-            zip: res.zip,
+            state: res.us_state,
+            zip: res.zipcode,
           });
-        } else console.log("No profile data in database");
+        } else {
+          console.log("No profile data in database");
+        }
       } catch (err) {
         console.log(err.stack);
       }

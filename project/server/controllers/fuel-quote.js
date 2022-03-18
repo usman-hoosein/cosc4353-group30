@@ -1,4 +1,18 @@
+/*
+ *  retrieve.getFuelQuote(username): Retrieves the fuel quote history for that user
+ *  create.insertFuelQuote(username,
+  date_requested,
+  date_delivered,
+  gallons_requested,
+  price_per_gallon,
+  total_paid): Adds a new fuel quote, with the arguements as the column values, to the db for that user
+ */
+
 const Pricing = require("../models/pricing");
+
+const retieve = require("../queries/CRUD/retrieve");
+const update = require("../queries/CRUD/update");
+const create = require("../queries/CRUD/create.js");
 
 //Temperorary array to hold the fuel quote history
 //TODO:Delete after db is made
