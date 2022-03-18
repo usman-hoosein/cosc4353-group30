@@ -29,13 +29,12 @@ async function check_password(username, password){
 }
 
 async function sign_up(username, password){
-    //
     const encrypted_password = ep.encrypt(password);
     create.insertUserCreds(username, encrypted_password);
     
 }
 
-module.exports = { user_exists, check_password }
+module.exports = { user_exists, check_password, sign_up }
 
 //FOR TESTING node db_queries.js
 //user_exists('spongegod69')

@@ -30,6 +30,8 @@ exports.postLogin = async (req, res, next) => {
 exports.postRegister = async (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
+  //console.log(username)
+  //console.log(password)
 
   check_user = await qry.user_exists(username);   //Check if the user already exists in the database
   if (check_user){
