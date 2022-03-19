@@ -102,10 +102,15 @@ async function getQuoteHistory(login) {
 }
 
 //Dummy data for test
-const userInfo = {
-    username: "testUser",
-    password: "testPass"
-}
+const loginUserInfo = {
+    username: "mooncoast_services",
+    password: "luv2drill"
+};
+
+const regUserInfo = {
+  username: "testUsername",
+  password: "testPassword"
+};
 
 let updateData = {
   fullName: "enteredFN",
@@ -119,7 +124,7 @@ let updateData = {
 describe("Testing Login", () => {
   //Testing that the login router is working and sends back a response.
   test("Testing Login: Should respond with status text 'Login OK'", async () => {
-      const response = await loginUser(userInfo)
+      const response = await loginUser(loginUserInfo)
       expect(response.statusText).toBe("Login OK")
   })
 })
@@ -127,7 +132,7 @@ describe("Testing Login", () => {
 describe("Testing Register", () => {
   //Testing that the register router is working and sends back a response.
   test("Testing Register: Should respond with status text 'Register OK'", async () => {
-      const response = await registerUser(userInfo)
+      const response = await registerUser(regUserInfo)
       expect(response.statusText).toBe("Register OK")
   })
 })
@@ -135,7 +140,7 @@ describe("Testing Register", () => {
 describe("Testing postProfile", () => {
   //testing that the postProfile router is working and sends back a response.
   test("Testing postProfile: Should respond with status text 'Profile OK'", async () => {
-    const response = await getProfile(userInfo)
+    const response = await getProfile(loginUserInfo)
     expect(response.statusText).toBe("Profile OK")
   })
 })
@@ -143,7 +148,7 @@ describe("Testing postProfile", () => {
 describe("Testing postUpdateProfile", () => {
   //testing that the postUpdateProfile router is working and sends back a response.
   test("Testing postUpdateProfile: Should respond with status text 'Profile Update OK'", async () => {
-    const response = await updateProfile(updateData, userInfo)
+    const response = await updateProfile(updateData, loginUserInfo)
     expect(response.statusText).toBe("Profile Update OK")
   })
 })
@@ -151,7 +156,7 @@ describe("Testing postUpdateProfile", () => {
 describe("Testing postCreateProfile", () => {
   //testing that the postCreateProfile router is working and sends back a response.
   test("Testing postCreateProfile: Should respond with status text 'Profile Create OK'", async () => {
-    const response = await createProfile(updateData, userInfo)
+    const response = await createProfile(updateData, loginUserInfo)
     expect(response.statusText).toBe("Profile Create OK")
   })
 })
@@ -159,7 +164,7 @@ describe("Testing postCreateProfile", () => {
 describe("Testing Create Quote", () => {
   //testing that the Create Quote router is working and sends back a response.
   test("Testing Create Quote: Should respond with status text 'Create Quote OK'", async () => {
-    const response = await createQuote(updateData, userInfo)
+    const response = await createQuote(updateData, loginUserInfo)
     expect(response.statusText).toBe("Create Quote OK")
   })
 })
@@ -167,7 +172,7 @@ describe("Testing Create Quote", () => {
 describe("Testing Quote History", () => {
   //testing that the Quote History router is working and sends back a response.
   test("Testing Quote History: Should respond with status text 'Quote History OK'", async () => {
-    const response = await getQuoteHistory(userInfo)
+    const response = await getQuoteHistory(loginUserInfo)
     expect(response.statusText).toBe("Quote History OK")
   })
 })
