@@ -1,7 +1,7 @@
 {
-    "username": "postgres",
-    "password": "SparkDB69!",
-    "host": "localhost",
-    "database": "4353projectDB",
+    "username": "",
+    "password": "",
+    "host": "",
+    "database": "",
     "port": 5432
 }
