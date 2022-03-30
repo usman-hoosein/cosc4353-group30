@@ -1,7 +1,7 @@
 {
-    "username": "",
-    "password": "",
-    "host": "",
-    "database": "",
+    "username": "ntzpalcg",
+    "password": "1OMZq1vH_90_6b6INK3UFjdmRBbUMAx1",
+    "host": "ziggy.db.elephantsql.com",
+    "database": "ntzpalcg",
     "port": 5432
 }
