@@ -10,7 +10,7 @@
 
 const Pricing = require("../models/pricing");
 
-const retieve = require("../queries/CRUD/retrieve");
+const retrieve = require("../queries/CRUD/retrieve");
 const update = require("../queries/CRUD/update");
 const create = require("../queries/CRUD/create.js");
 
@@ -19,17 +19,44 @@ const create = require("../queries/CRUD/create.js");
 var quoteHistory = [];
 
 exports.getFuelHistory = (req, res, next) => {
-  //TODO: Get Fuel Quote History from database
-  //FIXME: Change from sending temporary data (quoteHistory variable) to db data
-  res.statusMessage = "Quote History OK"
-  res.send(quoteHistory); //Send an array of json objects
+    const username = req.headers.username;
+    let data = []
+
+    try {
+        data = retrieve.getFuelQuote(username);
+        res.statusMessage = "FuelQuote Gotten";
+    } catch (err) {
+        console.log(err.stack);
+        res.statusMessage = "Error: Retrieving FuelQuote";
+    }
+    res.statusMessage = "Quote History OK"
+    res.send(quoteHistory); //Send an array of json objects
 };
 
 exports.postFuelQuote = (req, res, next) => {
-  //TODO: Add Fuel Quote form to db, when db is working
-  //FIXME: Change from updating the temporary data (quoteHistory variable) to db data
-  const data = req.body;
-  quoteHistory.push(data);
-  res.statusMessage = "Create Quote OK"
-  res.send(data); //Returns status of updating the db
+    const username = req.headers.username;
+    const Gallons = req.body.gallons_requested;
+    const date = req.body.date_requested;
+    const price = req.body.price_per_gallon;
+    const total = req.body.total_paid;
+    const address = req.body.date_delivered;
+
+    let data = [];
+    try {
+        data = create.insertFuelQuote(
+            username,
+            date,
+            address,
+            Gallons,
+            price,
+            total
+        );
+        res.statusMessage = "Quote Update OK";
+    } catch (err) {
+        console.log(err.stack);
+        res.statusMessage = "Error updating Quote";
+    }
+    quoteHistory.push(data);
+    res.statusMessage = "Create Quote OK"
+    res.send(data); //Returns status of updating the db
 };
