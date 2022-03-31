@@ -28,7 +28,7 @@
 
 # HOW TO INITIALIZE / RESET TABLES
 
-1. cd into project/server/util folder.
+1. cd into project.
 
 2. Run
-  ### 'node initialize_tables.js'
+  ### 'node queries/initialize/initialize.js'
