@@ -16,7 +16,7 @@ export async function createQuote(data, login) {
 
 export async function getQuoteHistory(login) {
   let creds = login;
-  return Axios.get(
+  return Axios.post(
     "/fuel/history ",
     {},
     {
