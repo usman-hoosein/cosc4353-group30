@@ -41,7 +41,7 @@ function FuelQuoteHistory() {
             <tbody>
               {history.map((entry) => {
                 return (
-                  <tr>
+                  <tr key={history.indexOf(entry)}>
                     <th>{entry[0]}</th>
                     <th>{addy}</th>
                     <th>{entry[2]}</th>
