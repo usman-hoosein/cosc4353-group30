@@ -24,7 +24,6 @@ function InitializeFQH(props) {
         return res.data.rows;
       })
       .then((res) => {
-        console.log(res);
         //res is expected to be an array of JS objects; convert into 2D array
         let table = [];
         for (let i = 0; i < res.length; i++) {
@@ -35,7 +34,6 @@ function InitializeFQH(props) {
           })
           table.push(temp);
         }
-        console.log(table);
         HistoryCtx.updateFuelQuoteHistory(table);
         console.log("FQH Initialized");
         props.setInit(false);
