@@ -36,7 +36,7 @@ exports.postFuelHistory = async (req, res, next) => {
 
 exports.postFuelQuote = async (req, res, next) => {
   const username = req.headers.username;
-  
+
   const Gallons = req.body.gallons;
   const date = req.body.date_requested;
   const price = req.body.price_per_gallon;
@@ -44,7 +44,7 @@ exports.postFuelQuote = async (req, res, next) => {
   const address = req.body.addr;
 
   // Checking if form fields are of the proper type
-  if (isNaN(Gallons) || Gallons.length === 0) {
+  if (isNaN(Gallons) || Gallons.length === 0 || isNaN(price) || isNaN(total)) {
     console.log("INVALID FORM FORMATTING");
     res.statusMessage = "Invalid formatting";
     res.status(400).send(data);
