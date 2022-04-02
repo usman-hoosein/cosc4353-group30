@@ -21,7 +21,7 @@ function InitializeFQH(props) {
     isLoading = true;
     getQuoteHistory(LoginCtx.Login)
       .then((res) => {
-        return res.data;
+        return res.data.rows;
       })
       .then((res) => {
         //res is expected to be an array of JS objects; convert into 2D array
@@ -29,11 +29,9 @@ function InitializeFQH(props) {
         for (let i = 0; i < res.length; i++) {
           let temp = [];
           let elem = res[i];
-          temp.push(elem[0]);
-          temp.push(elem[1]);
-          temp.push(elem[2]);
-          temp.push(elem[3]);
-          temp.push(elem[4]);
+          Object.keys(elem).forEach((key) => {
+            temp.push(elem[key]);
+          })
           table.push(temp);
         }
         HistoryCtx.updateFuelQuoteHistory(table);

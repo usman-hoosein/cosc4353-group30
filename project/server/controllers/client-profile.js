@@ -27,23 +27,44 @@ exports.postUpdateProfile = async (req, res, next) => {
   const zip = req.body.zip;
 
   let data = [];
-  try {
-    data = await update.updateClientInfo(
-      username,
-      fullName,
-      addr1,
-      addr2,
-      city,
-      state,
-      zip
-    );
-    res.statusMessage = "Profile Update OK";
-  } catch (err) {
-    console.log(err.stack);
-    res.statusMessage = "Error updating profile";
-  }
 
-  res.send(data);
+  // Checking if form fields are of the proper type
+  if (
+    isNaN(zip) ||
+    fullName.length > 50 ||
+    fullName.length === 0 ||
+    addr1.length > 100 ||
+    addr1.length === 0 ||
+    addr2.length > 100 ||
+    city.length > 100 ||
+    city.length === 0 ||
+    state.length === 0 ||
+    zip.length > 9 ||
+    zip.length < 5 ||
+    zip.length === 0
+  ) {
+    console.log("INVALID FORM FORMATTING");
+    res.statusMessage = "Invalid formatting";
+    res.status(400).send(data);
+  } else {
+    try {
+      data = await update.updateClientInfo(
+        username,
+        fullName,
+        addr1,
+        addr2,
+        city,
+        state,
+        zip
+      );
+      res.statusMessage = "Profile Update OK";
+    } catch (err) {
+      console.log(err.stack);
+      res.statusMessage = "Error updating profile";
+    }
+
+    res.send(data);
+  }
 };
 
 exports.postCreateProfile = async (req, res, next) => {
@@ -55,22 +76,42 @@ exports.postCreateProfile = async (req, res, next) => {
   const state = req.body.state;
   const zip = req.body.zip;
 
-  let data = [];
-  try {
-    data = await create.insertClientInfo(
-      username,
-      fullName,
-      addr1,
-      addr2,
-      city,
-      state,
-      zip
-    );
-    res.statusMessage = "Profile Create OK";
-  } catch (err) {
-    console.log(err.stack);
-    res.statusMessage = "Error creating profile";
-  }
+  // Checking if form fields are of the proper type
+  if (
+    isNaN(zip) ||
+    fullName.length > 50 ||
+    fullName.length === 0 ||
+    addr1.length > 100 ||
+    addr1.length === 0 ||
+    addr2.length > 100 ||
+    city.length > 100 ||
+    city.length === 0 ||
+    state.length === 0 ||
+    zip.length > 9 ||
+    zip.length < 5 ||
+    zip.length === 0
+  ) {
+    console.log("INVALID FORM FORMATTING");
+    res.statusMessage = "Invalid formatting";
+    res.status(400).send(data);
+  } else {
+    let data = [];
+    try {
+      data = await create.insertClientInfo(
+        username,
+        fullName,
+        addr1,
+        addr2,
+        city,
+        state,
+        zip
+      );
+      res.statusMessage = "Profile Create OK";
+    } catch (err) {
+      console.log(err.stack);
+      res.statusMessage = "Error creating profile";
+    }
 
-  res.send(data);
+    res.send(data);
+  }
 };

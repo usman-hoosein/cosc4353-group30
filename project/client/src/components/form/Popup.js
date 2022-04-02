@@ -38,7 +38,13 @@ const Popup = (props) => {
     const enteredP = priceInputRef.current.value;
     const enteredT = totalInputRef.current.value;
 
-    let info = [enteredGs, address, enteredDate, enteredP, enteredT];
+    let info = {
+      gallons: enteredGs,
+      addr: address,
+      date_requested: enteredDate,
+      price_per_gallon: enteredP,
+      total: enteredT,
+    };
 
     isLoading = true;
     createQuote(info, LoginCtx.Login)
