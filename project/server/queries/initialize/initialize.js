@@ -1,10 +1,7 @@
 const pool = require("../../util/database");
 const path = require("path");
 
-const p = path.join(
-  path.dirname(process.mainModule.filename),
-  "initialize.sql"
-);
+const p = "./initialize.sql";
 
 // const pg = require('pg')
 // const ClientClass = pg.Client
@@ -55,4 +52,7 @@ async function main() {
 }
 
 main();
+
+module.exports = { main, initialize_tables }
+
 // node initialize.js
