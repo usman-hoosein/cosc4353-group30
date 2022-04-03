@@ -1,7 +1,7 @@
 const pool = require("../../util/database");
 const path = require("path");
 
-const p = "./initialize.sql";
+const p = path.join(__dirname, "initialize.sql");
 
 // const pg = require('pg')
 // const ClientClass = pg.Client
@@ -13,9 +13,7 @@ const fs = require("fs");
 //Initialize / Reset Tables
 async function initialize_tables() {
   const client = await pool.connect();
-  const initialize_query = fs
-    .readFileSync(p)
-    .toString();
+  const initialize_query = fs.readFileSync(p).toString();
   await client.query(initialize_query);
   client.release();
 
@@ -53,6 +51,6 @@ async function main() {
 
 main();
 
-module.exports = { main, initialize_tables }
+module.exports = { main, initialize_tables };
 
 // node initialize.js
