@@ -34,14 +34,16 @@ const Popup = (props) => {
     event.preventDefault();
 
     const enteredGs = gallonsInputRef.current.value;
-    const enteredDate = dateInputRef.current.value;
+    const enteredDateRequested = dateInputRef.current.value;
     const enteredP = priceInputRef.current.value;
     const enteredT = totalInputRef.current.value;
+    const dateDelivered = "2022-01-01"
 
     let info = {
       gallons: enteredGs,
       addr: address,
-      date_requested: enteredDate,
+      date_requested: enteredDateRequested,
+      date_delivered: dateDelivered,     //FIXME: HOW TO GET THIS?
       price_per_gallon: enteredP,
       total: enteredT,
     };

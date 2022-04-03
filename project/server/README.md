@@ -23,6 +23,9 @@
 
 3. All unit tests should run and pass
 
+4. To check code coverage, run
+  ### 'npx jest --coverage'
+
 ## Press 'Ctrl + C' in server terminal to terminate server.
 
 

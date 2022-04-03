@@ -3,6 +3,7 @@ const app = require("./app.js")
 const request = require("express")
 const Axios = require('axios')
 const initial_d = require('./queries/initialize/initialize.js')
+const createManual = require('./queries/CRUD/create.js')
 
 async function loginUser(creds) {
     return Axios.post("http://localhost:8080/login", {}, {
@@ -92,8 +93,8 @@ async function createQuote(data, login) {
 
 async function getQuoteHistory(login) {
   let creds = login;
-  return Axios.get(
-    "http://localhost:8080/fuel/history ",
+  return Axios.post(
+    "http://localhost:8080/fuel/history",
     {},
     {
       headers: { username: creds.username },
@@ -138,13 +139,19 @@ let updateData = {
 
 createdGs = 50
 createdAddress = "159 Example Blvd"
-createdDate = "2022-03-25"
+createdDateReq = "2022-03-25"
+createdDateDel = "2022-04-01"
 createdP = 4.00
 createdT = 200.00
-// let createQuoteData = [createdGs, createdAddress, createdDate, createdP, createdT]
 let createQuoteData = {
-  
-}
+  gallons: createdGs,
+  addr: createdAddress,
+  date_requested: createdDateReq,
+  date_delivered: createdDateDel,
+  price_per_gallon: createdP,
+  total: createdT,
+};
+
 
 //Initialize the database before the tests
 describe("Testing Database Initialization", () => {
@@ -197,16 +204,15 @@ describe("Testing postProfile", () => {
 describe("Testing Create Quote", () => {
   //testing that the Create Quote router is working and sends back a response.
   test("Testing Create Quote: Should respond with status text 'Create Quote OK'", async () => {
-    const response = await createQuote(createQuoteData, testUserInfo)
+    const response = await createQuote(createQuoteData, loginUserInfo)
     expect(response.statusText).toBe("Create Quote OK")
   })
 })
-/*
+
 describe("Testing Quote History", () => {
   //testing that the Quote History router is working and sends back a response.
   test("Testing Quote History: Should respond with status text 'Quote History OK'", async () => {
-    const response = await getQuoteHistory(testUserInfo)
+    const response = await getQuoteHistory(loginUserInfo)
     expect(response.statusText).toBe("Quote History OK")
   })
 })
-*/
