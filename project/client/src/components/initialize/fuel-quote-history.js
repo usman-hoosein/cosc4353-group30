@@ -30,8 +30,9 @@ function InitializeFQH(props) {
           let temp = [];
           let elem = res[i];
           Object.keys(elem).forEach((key) => {
-            temp.push(elem[key]);
-          })
+            if (key !== "quote_id")
+              temp.push(elem[key]);
+          });
           table.push(temp);
         }
         HistoryCtx.updateFuelQuoteHistory(table);

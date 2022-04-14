@@ -30,3 +30,20 @@ export async function getQuoteHistory(login) {
       throw err;
     });
 }
+
+export async function getPrice(login, data) {
+  let creds = login;
+  return Axios.post(
+    "/fuel/price ",
+    data,
+    {
+      headers: { username: creds.username },
+    }
+  )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      throw err;
+    });
+}

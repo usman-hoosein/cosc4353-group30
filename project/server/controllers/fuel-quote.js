@@ -53,21 +53,36 @@ exports.postFuelQuote = async (req, res, next) => {
 
   let data = [];
   try {
-      data = create.insertFuelQuote(
-          username,
-          date_req,
-          date_del,
-          //address,
-          Gallons,
-          price,
-          total
-      );
-      res.statusMessage = "Quote Update OK";
+    data = create.insertFuelQuote(
+      username,
+      date_req,
+      date_del,
+      //address,
+      Gallons,
+      price,
+      total
+    );
+    res.statusMessage = "Quote Update OK";
   } catch (err) {
-      console.log(err.stack);
-      res.statusMessage = "Error updating Quote";
+    console.log(err.stack);
+    res.statusMessage = "Error updating Quote";
   }
   //quoteHistory.push(data);
   res.statusMessage = "Create Quote OK";
   res.send(data); //Returns status of updating the db
+};
+
+exports.postPrice = async (req, res, next) => {
+  const username = req.headers.username;
+
+  const addr = req.body.addr;
+  const gals = req.body.gals;
+
+  const addrSplit = addr.split(", ");
+  const state = addrSplit[2];
+
+  let ret = await Pricing.calculate(username, state, gals);
+
+  res.statusMessage = "Get Price OK";
+  res.send(ret);
 };

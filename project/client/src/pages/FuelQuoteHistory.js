@@ -12,13 +12,36 @@ function FuelQuoteHistory() {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const profileInfo = ProfileCtx.ProfileInfo;
   var history = HistoryCtx.FuelQuoteHistory;
-  var addy = ProfileCtx.ProfileInfo.addr1;
+
+  let addr2 = profileInfo.addr2;
+  let address;
+  if (addr2 === null)
+    address =
+      profileInfo.addr1 +
+      ", " +
+      profileInfo.city +
+      ", " +
+      profileInfo.state +
+      ", " +
+      profileInfo.zip;
+  else
+    address =
+      profileInfo.addr1 +
+      " " +
+      addr2 +
+      ", " +
+      profileInfo.city +
+      ", " +
+      profileInfo.state +
+      ", " +
+      profileInfo.zip;
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
-
+  console.log(history);
   return (
     <div className={styles.container}>
       {isOpen && <Popup handleClose={togglePopup} />}
@@ -42,11 +65,11 @@ function FuelQuoteHistory() {
               {history.map((entry) => {
                 return (
                   <tr key={history.indexOf(entry)}>
-                    <th>{entry[0]}</th>
-                    <th>{addy}</th>
-                    <th>{entry[2]}</th>
+                    <th>{entry[3]}</th>
+                    <th>{address}</th>
+                    <th>{entry[1].includes("T") ? entry[1].split("T")[0] : entry[1]}</th>
+                    <th>{entry[4]}</th>
                     <th>{entry[5]}</th>
-                    <th>{entry[6]}</th>
                   </tr>
                 );
               })}

@@ -12,4 +12,7 @@ router.post('/history', fuelController.postFuelHistory); //Gets fuel quote histo
 // /fuel/form => POST
 router.post('/form', fuelController.postFuelQuote); //Adds a fuel quote to the db from the quote form
 
+// /fuel/price => POST
+router.post('/price', fuelController.postPrice); //Adds a fuel quote to the db from the quote form
+
 module.exports = router;
