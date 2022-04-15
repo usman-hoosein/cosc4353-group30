@@ -29,7 +29,7 @@ module.exports = class Pricing {
     else galsFact = 0.03;
 
     var margin = ppg * (stateFact - histrFact + galsFact + profFact);
-    var sugPPG = ppg + margin;
+    var sugPPG = Math.round((ppg + margin) * 100) / 100;
 
     return { suggested_ppg: sugPPG, total: sugPPG * gals };
   }
