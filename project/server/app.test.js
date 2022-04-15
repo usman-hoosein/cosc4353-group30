@@ -4,6 +4,8 @@ const request = require("express")
 const Axios = require('axios')
 const initial_d = require('./queries/initialize/initialize.js')
 const createManual = require('./queries/CRUD/create.js')
+const Pricing = require("./models/pricing");
+const misc = require("./helpers/login/misc.js")
 
 async function loginUser(creds) {
     return Axios.post("http://localhost:8080/login", {}, {
@@ -214,5 +216,28 @@ describe("Testing Quote History", () => {
   test("Testing Quote History: Should respond with status text 'Quote History OK'", async () => {
     const response = await getQuoteHistory(loginUserInfo)
     expect(response.statusText).toBe("Quote History OK")
+  })
+})
+
+describe("Testing Pricing Module", () => {
+  //testing that the Pricing Module returns expected values
+  test("Testing Pricing Module: Should return ppg=1.70 and total_price=2,097.80", async () => {
+    test_username = 'mooncoast_services'
+    test_state = 'texas'
+    test_gals = 1234
+    pricing_output = await Pricing.calculate(test_username, test_state, test_gals)
+    
+    expect(pricing_output.suggested_ppg).toBe(1.7)
+    expect(pricing_output.total).toBe(2097.8)
+  })
+})
+
+describe("Testing miscellaneous helper functions", () => {
+  //testing some of the misc helper functions
+  test("Testing miscellaneous helper functions", async () => {
+    test_username = 'mooncoast_services'
+    test_password = 'wrong_password123'
+
+    expect(await misc.check_password(test_username, test_password)).toBe(false)
   })
 })

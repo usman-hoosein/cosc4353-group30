@@ -30,7 +30,8 @@ module.exports = class Pricing {
 
     var margin = ppg * (stateFact - histrFact + galsFact + profFact);
     var sugPPG = Math.round((ppg + margin) * 100) / 100;
+    var the_total = Math.round((sugPPG * gals) * 100) / 100
 
-    return { suggested_ppg: sugPPG, total: sugPPG * gals };
+    return { suggested_ppg: sugPPG, total: the_total };
   }
 };
