@@ -9,16 +9,13 @@ import LoadingContext from "../../contexts/loading";
 import styles from "./Popup.module.css";
 import { createQuote, getPrice } from "../../requests/fuel-quote-history";
 
-var totalDefVal = "";
-var suggDefVal = "";
-
 const Popup = (props) => {
   const HistoryCtx = useContext(FuelQuoteHistoryContext);
   const ProfileCtx = useContext(ProfileInfoContext);
   const LoginCtx = useContext(LoginContext);
   const LoadingCtx = useContext(LoadingContext);
 
-  const [reload, setreload] = useState(true);
+  const [defVals, setDefVals] = useState(["", ""])
 
   let navigate = useNavigate();
 
@@ -28,16 +25,29 @@ const Popup = (props) => {
   const dateInputRef = useRef();
   const priceInputRef = useRef();
   const totalInputRef = useRef();
-  const address =
-    profileInfo.addr1 +
-    " " +
-    profileInfo.addr2 +
-    ", " +
-    profileInfo.city +
-    ", " +
-    profileInfo.state +
-    ", " +
-    profileInfo.zip;
+
+  let addr2 = profileInfo.addr2;
+  let address;
+  if (addr2 === null || addr2.length === 0)
+    address =
+      profileInfo.addr1 +
+      ", " +
+      profileInfo.city +
+      ", " +
+      profileInfo.state +
+      ", " +
+      profileInfo.zip;
+  else
+    address =
+      profileInfo.addr1 +
+      " " +
+      addr2 +
+      ", " +
+      profileInfo.city +
+      ", " +
+      profileInfo.state +
+      ", " +
+      profileInfo.zip;
 
   var isLoading = false;
 
@@ -74,6 +84,7 @@ const Popup = (props) => {
           enteredGs,
           "$" + enteredP,
           "$" + enteredT,
+          address,
         ];
         HistoryCtx.addFuelQuoteHistory(info);
         isLoading = false;
@@ -96,10 +107,10 @@ const Popup = (props) => {
       isLoading = true;
       getPrice(LoginCtx.Login, data)
         .then((res) => {
-          totalDefVal = parseFloat(res.data.total.toFixed(2));
-          suggDefVal = parseFloat(res.data.suggested_ppg.toFixed(2));
+          let totalDefVal = parseFloat(res.data.total.toFixed(2));
+          let suggDefVal = parseFloat(res.data.suggested_ppg.toFixed(2));
           isLoading = false;
-          setreload(!reload);
+          setDefVals([suggDefVal, totalDefVal]);
         })
         .catch((err) => {
           isLoading = false;
@@ -132,7 +143,7 @@ const Popup = (props) => {
             type="number"
             id="suggested_ppg"
             ref={priceInputRef}
-            value={suggDefVal}
+            value={defVals[0]}
             readOnly
           />
         </div>
@@ -142,7 +153,7 @@ const Popup = (props) => {
             type="number"
             id="total"
             ref={totalInputRef}
-            value={totalDefVal}
+            value={defVals[1]}
             readOnly
           />
         </div>

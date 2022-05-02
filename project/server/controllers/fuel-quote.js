@@ -44,32 +44,42 @@ exports.postFuelQuote = async (req, res, next) => {
   const total = req.body.total;
   const address = req.body.addr;
 
+  let data = [];
+
   // Checking if form fields are of the proper type
-  if (isNaN(Gallons) || Gallons.length === 0 || isNaN(price) || isNaN(total)) {
+  if (
+    isNaN(Gallons) ||
+    isNaN(price) ||
+    isNaN(total) ||
+    date_req === null ||
+    date_req.length === 0 ||
+    Gallons.length === 0 ||
+    price.length === 0 ||
+    total.length === 0
+  ) {
     console.log("INVALID FORM FORMATTING");
     res.statusMessage = "Invalid formatting";
     res.status(400).send(data);
+  } else {
+    try {
+      data = create.insertFuelQuote(
+        username,
+        date_req,
+        date_del,
+        address,
+        Gallons,
+        price,
+        total
+      );
+      res.statusMessage = "Quote Update OK";
+    } catch (err) {
+      console.log(err.stack);
+      res.statusMessage = "Error updating Quote";
+    }
+    //quoteHistory.push(data);
+    res.statusMessage = "Create Quote OK";
+    res.send(data); //Returns status of updating the db
   }
-
-  let data = [];
-  try {
-    data = create.insertFuelQuote(
-      username,
-      date_req,
-      date_del,
-      //address,
-      Gallons,
-      price,
-      total
-    );
-    res.statusMessage = "Quote Update OK";
-  } catch (err) {
-    console.log(err.stack);
-    res.statusMessage = "Error updating Quote";
-  }
-  //quoteHistory.push(data);
-  res.statusMessage = "Create Quote OK";
-  res.send(data); //Returns status of updating the db
 };
 
 exports.postPrice = async (req, res, next) => {

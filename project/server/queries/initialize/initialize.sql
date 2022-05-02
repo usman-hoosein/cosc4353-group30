@@ -21,9 +21,10 @@ CREATE TABLE ClientInformation(
 
 CREATE TABLE FuelQuote(
     quote_id            SERIAL PRIMARY KEY,
-    username           VARCHAR(20) NOT NULL,
+    username            VARCHAR(20) NOT NULL,
     date_requested      DATE NOT NULL,
     date_delivered      DATE NOT NULL,
+    address                VARCHAR(90) NOT NULL,
     gallons_requested   INTEGER NOT NULL,
     price_per_gallon    MONEY NOT NULL,
     total_paid          MONEY NOT NULL,
@@ -39,8 +40,8 @@ INSERT INTO ClientInformation(username, full_name, addr1, addr2, city, us_state,
 INSERT INTO ClientInformation(username, full_name, addr1, addr2, city, us_state, zipcode) VALUES ('spongegod69', 'Spongebob Squarepants', '123 Conch St', NULL, 'Bikini Bottom', 'TX', 42069);
 INSERT INTO ClientInformation(username, full_name, addr1, addr2, city, us_state, zipcode) VALUES ('edp445', 'Bryant Moreland', '445 Eagle St', NULL, 'Philadelphia', 'PA', 19019);
 
-INSERT INTO FuelQuote(username, date_requested, date_delivered, gallons_requested, price_per_gallon, total_paid) VALUES ('mooncoast_services', '2020-12-31', '2021-01-07', 100, '$3.00', '$300.00');
-INSERT INTO FuelQuote(username, date_requested, date_delivered, gallons_requested, price_per_gallon, total_paid) VALUES ('spongegod69', '2021-02-14', '2022-02-15', 100, '$3.00', '$300.00');
-INSERT INTO FuelQuote(username, date_requested, date_delivered, gallons_requested, price_per_gallon, total_paid) VALUES ('mooncoast_services', '2021-03-30', '2021-04-07', 100, '$3.00', '$300.00');
-INSERT INTO FuelQuote(username, date_requested, date_delivered, gallons_requested, price_per_gallon, total_paid) VALUES ('spongegod69', '2021-12-31', '2022-01-07', 100, '$3.00', '$300.00');
-INSERT INTO FuelQuote(username, date_requested, date_delivered, gallons_requested, price_per_gallon, total_paid) VALUES ('edp445', '2022-01-30', '2022-02-03', 100, '$3.00', '$300.00');
+-- INSERT INTO FuelQuote(username, date_requested, date_delivered, address, gallons_requested, price_per_gallon, total_paid) VALUES ('mooncoast_services', '2020-12-31', '2021-01-07', 100, '$3.00', '$300.00');
+-- INSERT INTO FuelQuote(username, date_requested, date_delivered, address, gallons_requested, price_per_gallon, total_paid) VALUES ('spongegod69', '2021-02-14', '2022-02-15', 100, '$3.00', '$300.00');
+-- INSERT INTO FuelQuote(username, date_requested, date_delivered, address, gallons_requested, price_per_gallon, total_paid) VALUES ('mooncoast_services', '2021-03-30', '2021-04-07', 100, '$3.00', '$300.00');
+-- INSERT INTO FuelQuote(username, date_requested, date_delivered, address, gallons_requested, price_per_gallon, total_paid) VALUES ('spongegod69', '2021-12-31', '2022-01-07', 100, '$3.00', '$300.00');
+-- INSERT INTO FuelQuote(username, date_requested, date_delivered, address, gallons_requested, price_per_gallon, total_paid) VALUES ('edp445', '2022-01-30', '2022-02-03', 100, '$3.00', '$300.00');

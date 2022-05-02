@@ -38,27 +38,28 @@ async function insertFuelQuote(
   username,
   date_requested,
   date_delivered,
+  addr,
   gallons_requested,
   price_per_gallon,
   total_paid
 ) {
   let text =
-    "INSERT INTO FuelQuote(username, date_requested, date_delivered, gallons_requested, price_per_gallon, total_paid) " +
-    "VALUES ($1, $2, $3, $4, $5, $6);";
+    "INSERT INTO FuelQuote(username, date_requested, date_delivered, address, gallons_requested, price_per_gallon, total_paid) " +
+    "VALUES ($1, $2, $3, $4, $5, $6, $7);";
   let values = [
     username,
     date_requested,
     date_delivered,
+    addr,
     gallons_requested,
     price_per_gallon,
     total_paid,
   ];
-
   try {
     let res = await query(text, values);
     return res;
   } catch (err) {
-    throw err;
+    throw err.stack;
   }
 }
 
