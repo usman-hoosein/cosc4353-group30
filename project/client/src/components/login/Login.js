@@ -1,4 +1,4 @@
-import { useRef, useContext } from "react";
+import { useRef, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -8,6 +8,8 @@ import { loginUser } from "../../requests/login";
 
 function Login(props) {
   const LoginCtx = useContext(LoginContext);
+
+  const [showPasswd, setShowPasswd] = useState(false);
 
   const navigate = useNavigate();
 
@@ -38,6 +40,10 @@ function Login(props) {
     }
   };
 
+  const togglePassword = () => {
+    setShowPasswd(!showPasswd);
+  };
+
   const registerHandler = async (event) => {
     event.preventDefault();
     props.setNeedsRgst(true);
@@ -46,19 +52,23 @@ function Login(props) {
   return (
     <div className={styles.login_wrapper}>
       <h1>Log In</h1>
-      <form className={styles.form} onSubmit={submitHandler}>
-        <div className={styles.control}>
-          <label htmlFor="username">Username</label>
-          <input type="text" id="username" ref={usernameInputRef} required />
-        </div>
-        <div className={styles.control}>
-          <label htmlFor="password">Password</label>
-          <input type="text" id="password" ref={passwordInputRef} required />
-        </div>
-        <div className={styles.actions}>
-          <button>Login</button>
-        </div>
-      </form>
+      <div className={styles.control}>
+        <label htmlFor="username">Username</label>
+        <input type="text" id="username" ref={usernameInputRef} required />
+      </div>
+      <div className={styles.control}>
+        <label htmlFor="password">Password</label>
+        <input
+          type={showPasswd ? "text" : "password"}
+          id="password"
+          ref={passwordInputRef}
+          required
+        />
+      </div>
+      <button onClick={togglePassword}>Show Password</button>
+      <div className={styles.actions}>
+        <button onClick={submitHandler}>Login</button>
+      </div>
       <span>or</span>
       <div className={styles.actions}>
         <button onClick={registerHandler}>Create New Account</button>
